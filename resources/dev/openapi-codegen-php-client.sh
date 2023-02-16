@@ -38,7 +38,7 @@ docker run --rm -v "${rootdir}":/local ${generatorimage} generate -g openapi-cod
                                                                --additional-properties=factories=true \
                                                                --global-property=models
 
-cd "${rootdir}" && sudo chown -R "$(id -u):$(id -g)" Client.php ClientMock.php Model Endpoint Factory
+cd "${rootdir}" && sudo chown -R "$(id -u):$(id -g)" Client.php Model Endpoint Factory
 
 if [ -x "${rootdir}/resources/scripts/after_run.sh" ]
 then

@@ -20,7 +20,7 @@ abstract class GuzzleClient extends Client
 {
     /** @param array<string, mixed> $configs */
     public function __construct(
-        private GuzzleHttpClient $client,
+        private readonly GuzzleHttpClient $client,
         Closure $endpointBuilder,
         array $configs,
     ) {

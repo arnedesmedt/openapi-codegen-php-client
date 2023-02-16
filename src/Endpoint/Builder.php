@@ -22,7 +22,7 @@ class Builder
     private bool $snakeCasedBody     = false;
     private bool $snakeCasedFormData = false;
 
-    public function __construct(private string $namespace)
+    public function __construct(private readonly string $namespace)
     {
     }
 

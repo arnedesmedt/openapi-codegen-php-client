@@ -21,5 +21,6 @@
         </properties>
     </rule>
 
+    <exclude-pattern>src/*</exclude-pattern>
     <include-pattern>tests/*</include-pattern>
 </ruleset>

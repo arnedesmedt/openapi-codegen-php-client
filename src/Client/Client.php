@@ -26,8 +26,8 @@ abstract class Client
 
     /** @param array<string, mixed> $configs */
     public function __construct(
-        private Closure $endpointBuilder,
-        private array $configs = [],
+        private readonly Closure $endpointBuilder,
+        private readonly array $configs = [],
     ) {
     }
 
@@ -45,7 +45,6 @@ abstract class Client
         return $this;
     }
 
-    /** @return static */
     public function setPrependPath(string $prependPath): static
     {
         $this->prependPath = $prependPath;

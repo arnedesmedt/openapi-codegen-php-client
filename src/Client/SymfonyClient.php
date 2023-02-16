@@ -20,7 +20,7 @@ abstract class SymfonyClient extends Client
 {
     /** @param array<string, mixed> $configs */
     public function __construct(
-        private HttpClientInterface $client,
+        private readonly HttpClientInterface $client,
         Closure $endpointBuilder,
         array $configs,
     ) {

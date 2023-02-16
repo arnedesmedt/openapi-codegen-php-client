@@ -27,10 +27,9 @@ use function in_array;
 use function ltrim;
 use function rtrim;
 use function sprintf;
+use function str_ends_with;
 use function str_replace;
-use function strlen;
 use function strval;
-use function substr_compare;
 
 use const ARRAY_FILTER_USE_KEY;
 
@@ -75,11 +74,7 @@ abstract class AbstractEndpoint implements Endpoint
     private function paramWhitelist(): array
     {
         return array_map(
-            static fn (string $param) => substr_compare(
-                $param,
-                '[]',
-                -strlen('[]'),
-            ) === 0
+            static fn (string $param) => str_ends_with($param, '[]')
                 ? rtrim($param, '[]')
                 : $param,
             $this->paramWhitelist,

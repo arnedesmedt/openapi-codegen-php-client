@@ -13,6 +13,8 @@ use function file_get_contents;
 use function json_decode;
 use function sprintf;
 
+use const JSON_THROW_ON_ERROR;
+
 /**
  * A base client builder implementation.
  */
@@ -36,7 +38,7 @@ abstract class ClientBuilder
         $content = file_get_contents($path);
 
         /** @var array<string, mixed> $configs */
-        $configs = json_decode($content, true);
+        $configs = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
 
         return $configs;
     }

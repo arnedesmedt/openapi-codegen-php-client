@@ -5,8 +5,13 @@ declare(strict_types=1);
 namespace ADS\OpenApi\Codegen\ClientBuilder;
 
 use ADS\OpenApi\Codegen\Client\Client;
+use ADS\OpenApi\Codegen\Client\GuzzleClientWrapper;
+use ADS\OpenApi\Codegen\Client\SymfonyClientWrapper;
 use ADS\OpenApi\Codegen\Endpoint\Builder as EndpointBuilder;
+use Client\ClientWrapper;
+use GuzzleHttp\Client as GuzzleClient;
 use RuntimeException;
+use Symfony\Contracts\HttpClient\HttpClientInterface as SymfonyClient;
 
 use function file_exists;
 use function file_get_contents;
@@ -20,10 +25,27 @@ use const JSON_THROW_ON_ERROR;
  */
 abstract class ClientBuilder
 {
+    protected ClientWrapper $client;
+
+    public function __construct(GuzzleClient|SymfonyClient $client)
+    {
+        $this->client = match (true) {
+            $client instanceof GuzzleClient => new GuzzleClientWrapper($client),
+            $client instanceof SymfonyClient => new SymfonyClientWrapper($client),
+        };
+    }
+
+    protected function client(): ClientWrapper
+    {
+        return $this->client;
+    }
+
     /**
      * Return the configured client.
      */
     abstract public function build(): Client;
+
+    abstract protected function endpointBuilder(): EndpointBuilder;
 
     /** @return array<string, mixed> */
     protected function configs(string $path): array
@@ -42,6 +64,4 @@ abstract class ClientBuilder
 
         return $configs;
     }
-
-    abstract protected function endpointBuilder(): EndpointBuilder;
 }

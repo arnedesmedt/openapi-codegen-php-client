@@ -1,4 +1,4 @@
-package org.elasticsearch.codegen;
+package org.arnedesmedt.codegen;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;

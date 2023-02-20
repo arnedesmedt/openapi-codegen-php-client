@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace ADS\OpenApi\Codegen\Client;
 
-use Client\ClientWrapper;
 use GuzzleHttp\Client as GuzzleHttpClient;
 use Psr\Http\Message\ResponseInterface;
 
@@ -20,15 +19,10 @@ class GuzzleClientWrapper implements ClientWrapper
     ) {
     }
 
-    public function client(): GuzzleHttpClient
-    {
-        return $this->client;
-    }
-
     /** @inheritDoc */
     public function request(string $method, string $uri, array $options = []): array
     {
-        $response = $this->client()->request($method, $uri, $options);
+        $response = $this->client->request($method, $uri, $options);
 
         return $this->contentFromResponse($response);
     }

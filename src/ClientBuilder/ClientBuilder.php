@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace ADS\OpenApi\Codegen\ClientBuilder;
 
 use ADS\OpenApi\Codegen\Client\Client;
+use ADS\OpenApi\Codegen\Client\ClientWrapper;
 use ADS\OpenApi\Codegen\Client\GuzzleClientWrapper;
 use ADS\OpenApi\Codegen\Client\SymfonyClientWrapper;
 use ADS\OpenApi\Codegen\Endpoint\Builder as EndpointBuilder;
-use Client\ClientWrapper;
 use GuzzleHttp\Client as GuzzleClient;
 use RuntimeException;
 use Symfony\Contracts\HttpClient\HttpClientInterface as SymfonyClient;
@@ -27,11 +27,12 @@ abstract class ClientBuilder
 {
     protected ClientWrapper $client;
 
-    public function __construct(GuzzleClient|SymfonyClient $client)
+    public function __construct(GuzzleClient|SymfonyClient|ClientWrapper $client)
     {
         $this->client = match (true) {
             $client instanceof GuzzleClient => new GuzzleClientWrapper($client),
             $client instanceof SymfonyClient => new SymfonyClientWrapper($client),
+            $client instanceof ClientWrapper => $client,
         };
     }
 

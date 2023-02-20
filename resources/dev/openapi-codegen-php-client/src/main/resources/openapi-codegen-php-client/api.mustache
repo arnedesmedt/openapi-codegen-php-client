@@ -16,14 +16,14 @@ class {{classname}} extends AbstractEndpoint
 {{#pathParams.0}}
 
     /** @var array<string> */
-    protected array $routeParams = [{{#pathParams}}
+    protected array $pathParameterNames = [{{#pathParams}}
         '{{baseName}}',{{/pathParams}}
     ];
 {{/pathParams.0}}
 {{#queryParams.0}}
 
     /** @var array<string> */
-    protected array $paramWhitelist = [{{#queryParams}}
+    protected array $queryParameterNames = [{{#queryParams}}
         '{{baseName}}',{{/queryParams}}
     ];
 {{/queryParams.0}}

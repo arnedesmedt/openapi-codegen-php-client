@@ -2,17 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Client;
+namespace ADS\OpenApi\Codegen\Client;
 
 interface ClientWrapper
 {
-    /**
-     * @return mixed
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     */
-    public function client();
-
     /**
      * @param array<string, mixed> $options
      *

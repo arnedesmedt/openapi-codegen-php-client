@@ -12,46 +12,30 @@ declare(strict_types=1);
 namespace ADS\OpenApi\Codegen\Endpoint;
 
 use ADS\ValueObjects\ValueObject;
+use EventEngine\Data\ImmutableRecord;
 
 /**
  * API endpoint interface.
  */
 interface Endpoint
 {
-    /**
-     * HTTP method for the current endpoint.
-     */
     public function method(): string;
 
-    /**
-     * URI for the current endpoint.
-     */
     public function uri(): string;
 
-    /**
-     * Params data for the current endpoint.
-     *
-     * @return array<string>
-     */
-    public function params(): array;
+    /** @return array<int|string|array<int,mixed>> */
+    public function queryParameters(): array;
 
-    /**
-     * Body content for the current endpoint.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<int|string> */
+    public function pathParameters(): array;
+
+    /** @return array<string, mixed> */
     public function body(): array|null;
 
-    /**
-     * FormData content for the current endpoint.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function formData(): array|null;
 
     /**
-     * Set body data for the endpoint.
-     *
      * @param array<string, mixed> $body
      *
      * @return static
@@ -61,8 +45,6 @@ interface Endpoint
     public function setBody(array|null $body);
 
     /**
-     * Set body data for the endpoint.
-     *
      * @param array<string, mixed> $formData
      *
      * @return static
@@ -71,14 +53,9 @@ interface Endpoint
      */
     public function setFormData(array|null $formData);
 
-    /**
-     * Set params data for the endpoint.
-     *
-     * @param array<string, string|ValueObject>|null $params
-     *
-     * @return static
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     */
-    public function setParams(array|null $params);
+    /** @param ImmutableRecord|array<string, int|string|array<int,mixed>|ValueObject>|null $params */
+    public function setQueryParameters(ImmutableRecord|array|null $params): static;
+
+    /** @param ImmutableRecord|array<string, int|string|ValueObject>|null $params */
+    public function setPathParameters(ImmutableRecord|array|null $params): static;
 }

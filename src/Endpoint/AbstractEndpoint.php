@@ -12,27 +12,22 @@ declare(strict_types=1);
 namespace ADS\OpenApi\Codegen\Endpoint;
 
 use ADS\Util\ArrayUtil;
+use ADS\ValueObjects\Util;
 use ADS\ValueObjects\ValueObject;
 use EventEngine\Data\ImmutableRecord;
 use UnexpectedValueException;
 
 use function array_diff;
-use function array_filter;
 use function array_keys;
 use function array_map;
-use function array_merge;
 use function count;
 use function implode;
-use function in_array;
 use function ltrim;
 use function rtrim;
 use function sprintf;
+use function str_ends_with;
 use function str_replace;
-use function strlen;
 use function strval;
-use function substr_compare;
-
-use const ARRAY_FILTER_USE_KEY;
 
 /**
  * Abstract endpoint implementation.
@@ -42,18 +37,17 @@ abstract class AbstractEndpoint implements Endpoint
     protected string $method;
     protected string $uri;
     /** @var array<string>  */
-    protected array $routeParams = [];
+    protected array $pathParameterNames = [];
+    /** @var array<string, string|int>  */
+    protected array $pathParameters = [];
     /** @var array<string>  */
-    protected array $paramWhitelist = [];
-    /** @var array<string, string>  */
-    protected array $params = [];
+    protected array $queryParameterNames = [];
+    /** @var array<string, string|int|array<int,mixed>> */
+    protected array $queryParameters = [];
     /** @var array<string, mixed>|null  */
     protected array|null $body = null;
     /** @var array<string, mixed>|null  */
-    protected array|null $formData     = null;
-    protected bool $snakeCasedParams   = false;
-    protected bool $snakeCasedBody     = false;
-    protected bool $snakeCasedFormData = false;
+    protected array|null $formData = null;
 
     public function method(): string
     {
@@ -64,45 +58,58 @@ abstract class AbstractEndpoint implements Endpoint
     {
         $uri = $this->uri;
 
-        foreach ($this->routeParams as $paramName) {
-            $uri = str_replace(sprintf('{%s}', $paramName), strval($this->params[$paramName]), $uri);
+        foreach ($this->pathParameterNames as $pathParameterName) {
+            $uri = str_replace(
+                sprintf('{%s}', $pathParameterName),
+                strval($this->pathParameters[$pathParameterName]),
+                $uri,
+            );
         }
 
         return ltrim($uri, '/');
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function queryParameters(): array
+    {
+        return $this->queryParameters;
+    }
+
     /** @return array<string> */
-    private function paramWhitelist(): array
+    public function queryParameterNames(): array
     {
         return array_map(
-            static fn (string $param) => substr_compare(
-                $param,
-                '[]',
-                -strlen('[]'),
-            ) === 0
+            static fn (string $param) => str_ends_with($param, '[]')
                 ? rtrim($param, '[]')
                 : $param,
-            $this->paramWhitelist,
+            $this->queryParameterNames,
         );
+    }
+
+    public function setQueryParameters(ImmutableRecord|array|null $queryParameters): static
+    {
+        $this->queryParameters = $this->processParameters($queryParameters, $this->queryParameterNames()) ?? [];
+
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function params(): array
+    public function pathParameters(): array
     {
-        $paramWhiteList = $this->paramWhitelist();
+        return $this->pathParameters;
+    }
 
-        /** @var array<string> $result */
-        $result = ArrayUtil::rejectNullValues(
-            array_filter(
-                $this->params,
-                static fn (string $paramName) => in_array($paramName, $paramWhiteList),
-                ARRAY_FILTER_USE_KEY,
-            ),
-        );
+    public function setPathParameters(ImmutableRecord|array|null $queryParameters): static
+    {
+        /** @var array<string, int|string> $pathParameters */
+        $pathParameters = $this->processParameters($queryParameters, $this->pathParameterNames) ?? [];
+        $this->pathParameters = $pathParameters;
 
-        return $result;
+        return $this;
     }
 
     public function body(): array|null
@@ -113,9 +120,9 @@ abstract class AbstractEndpoint implements Endpoint
     /**
      * {@inheritdoc}
      */
-    public function setBody(array|null $body)
+    public function setBody(ImmutableRecord|array|null $body)
     {
-        $this->body = $this->transformData($body);
+        $this->body = $this->processData($body);
 
         return $this;
     }
@@ -130,7 +137,7 @@ abstract class AbstractEndpoint implements Endpoint
      */
     public function setFormData(array|null $formData)
     {
-        $this->formData = $this->transformData($formData);
+        $this->formData = $this->processData($formData);
 
         return $this;
     }
@@ -140,83 +147,65 @@ abstract class AbstractEndpoint implements Endpoint
      *
      * @return array<string, mixed>|null
      */
-    private function transformData(array|null $data): array|null
+    private function processData(ImmutableRecord|array|null $data): array|null
     {
         if ($data === null) {
             return $data;
         }
 
-        $data = ArrayUtil::rejectNullValues($data);
-        $data = ArrayUtil::rejectEmptyArrayValues($data);
-        $data = ArrayUtil::removePrefixFromKeys(
-            $data,
-            'prefixNumber',
-        );
+        /** @var array<string, mixed> $scalarData */
+        $scalarData = Util::toScalar($data);
+        $scalarData = ArrayUtil::rejectNullValues($scalarData);
+        $scalarData = ArrayUtil::rejectEmptyArrayValues($scalarData);
 
-        if ($this->snakeCasedBody) {
-            /** @var array<mixed> $data */
-            $data = ArrayUtil::toSnakeCasedKeys($data);
-        }
-
-        if (! ArrayUtil::isAssociative($data)) {
-            $data = array_map(
-                static fn ($item) => $item instanceof ImmutableRecord ? $item->toArray() : $item,
-                $data,
-            );
-        }
-
-        return $data;
+        return $scalarData;
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function setParams(array|null $params)
-    {
-        if ($params === null) {
-            return $this;
-        }
-
-        if ($this->snakeCasedParams) {
-            /** @var array<string, string> $params */
-            $params = ArrayUtil::toSnakeCasedKeys($params);
-        }
-
-        $this->checkParams($params);
-
-        /** @var array<string> $params */
-        $params = array_map(
-            static fn ($paramValue) => $paramValue instanceof ValueObject ? $paramValue->toValue() : $paramValue,
-            $params,
-        );
-
-        $this->params = $params;
-
-        return $this;
-    }
-
-    /**
-     * Loop over the param to check all params are into the whitelist.
+     * @param ImmutableRecord|array<string, int|string|array<int,mixed>|ValueObject>|null $parameters
+     * @param array<string>                                                               $allowedParameterNames
      *
-     * @param array<string, mixed>|null $params
+     * @return array<string, int|string|array<int,mixed>>|null
+     */
+    private function processParameters(
+        array|ImmutableRecord|null $parameters,
+        array $allowedParameterNames,
+    ): array|null {
+        if ($parameters === null) {
+            return null;
+        }
+
+        /** @var array<string, int|string|array<int,mixed>>  $scalarParameters */
+        $scalarParameters = Util::toScalar($parameters);
+
+        $this->checkAllParametersAllowed($scalarParameters, $allowedParameterNames);
+
+        /** @var array<string, int|string|array<int,mixed>> $scalarParametersWithoutNull */
+        $scalarParametersWithoutNull = ArrayUtil::rejectNullValues($scalarParameters);
+
+        return $scalarParametersWithoutNull;
+    }
+
+    /**
+     * @param array<string, mixed>|null $parameters
+     * @param array<string, string>     $allowedParameterNames
      *
      * @throws UnexpectedValueException
      */
-    private function checkParams(array|null $params): void
+    private function checkAllParametersAllowed(array|null $parameters, array $allowedParameterNames): void
     {
-        if ($params === null) {
+        if ($parameters === null) {
             return;
         }
 
-        $whitelist     = array_merge($this->paramWhitelist(), $this->routeParams);
-        $invalidParams = array_diff(array_keys($params), $whitelist);
+        $invalidParams = array_diff(array_keys($parameters), $allowedParameterNames);
         $countInvalid  = count($invalidParams);
 
         if ($countInvalid <= 0) {
             return;
         }
 
-        $whitelist     = implode('", "', $whitelist);
+        $whitelist     = implode('", "', $allowedParameterNames);
         $invalidParams = implode('", "', $invalidParams);
         $message       = '"%s" is not a valid parameter. Allowed parameters are "%s".';
         if ($countInvalid > 1) {
@@ -226,41 +215,5 @@ abstract class AbstractEndpoint implements Endpoint
         throw new UnexpectedValueException(
             sprintf($message, $invalidParams, $whitelist),
         );
-    }
-
-    /**
-     * @return static
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     */
-    public function setSnakeCasedParams(bool $snakeCasedParams)
-    {
-        $this->snakeCasedParams = $snakeCasedParams;
-
-        return $this;
-    }
-
-    /**
-     * @return static
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     */
-    public function setSnakeCasedBody(bool $snakeCasedBody)
-    {
-        $this->snakeCasedBody = $snakeCasedBody;
-
-        return $this;
-    }
-
-    /**
-     * @return static
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     */
-    public function setSnakeCasedFormData(bool $snakeCasedFormData)
-    {
-        $this->snakeCasedFormData = $snakeCasedFormData;
-
-        return $this;
     }
 }

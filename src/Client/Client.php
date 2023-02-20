@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace ADS\OpenApi\Codegen\Client;
 
 use ADS\OpenApi\Codegen\Endpoint\AbstractEndpoint;
+use ADS\OpenApi\Codegen\Endpoint\Builder;
 use ADS\Util\ArrayUtil;
 use Closure;
-use GuzzleHttp\Client as GuzzleHttpClient;
-use Symfony\Contracts\HttpClient\HttpClientInterface as SymfonyClient;
-use Throwable;
 
 use function array_key_exists;
 use function array_shift;
@@ -18,39 +16,13 @@ use function is_array;
 
 abstract class Client
 {
-    protected Closure|null $exceptionHandler = null;
-
-    protected Closure|null $optionBuilder = null;
-
-    private string|null $prependPath = null;
-
     /** @param array<string, mixed> $configs */
     public function __construct(
-        private Closure $endpointBuilder,
-        private array $configs = [],
+        private readonly ClientWrapper $client,
+        private readonly Builder $endpointBuilder,
+        private readonly array $configs = [],
+        private readonly Closure|null $optionBuilder = null,
     ) {
-    }
-
-    public function setExceptionHandler(Closure $exceptionHandler): static
-    {
-        $this->exceptionHandler = $exceptionHandler;
-
-        return $this;
-    }
-
-    public function setOptionBuilder(Closure $optionBuilder): static
-    {
-        $this->optionBuilder = $optionBuilder;
-
-        return $this;
-    }
-
-    /** @return static */
-    public function setPrependPath(string $prependPath): static
-    {
-        $this->prependPath = $prependPath;
-
-        return $this;
     }
 
     protected function endpoint(string $name): AbstractEndpoint
@@ -58,38 +30,20 @@ abstract class Client
         return ($this->endpointBuilder)($name);
     }
 
-    /** @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint */
-    abstract protected function client(): SymfonyClient|GuzzleHttpClient;
-
     protected function performRequest(AbstractEndpoint $endpoint): mixed
     {
         $method  = $endpoint->method();
-        $uri     = $this->uriWithPrependPath($endpoint);
+        $uri     = $endpoint->uri();
         $options = $this->buildOptions($endpoint);
 
-        try {
-            $response = $this->client()->request($method, $uri, $options);
-        } catch (Throwable $exception) {
-            throw $this->handleException($exception);
-        }
-
-        $content = $this->contentFromResponse($response);
+        $response = $this->client->request($method, $uri, $options);
 
         if ($this->configs['transformHal'] ?? false) {
-            return $this->transformHal($content);
+            return $this->transformHal($response);
         }
 
-        return $content;
+        return $response;
     }
-
-    /**
-     * @return array<mixed>
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     */
-    abstract protected function contentFromResponse(mixed $response): array;
-
-    abstract protected function handleException(Throwable $exception): Throwable;
 
     /**
      * @param array<mixed> $content
@@ -113,21 +67,11 @@ abstract class Client
         return $content;
     }
 
-    protected function uriWithPrependPath(AbstractEndpoint $endpoint): string
-    {
-        $uri = $endpoint->uri();
-        if ($this->prependPath !== null) {
-            return $this->prependPath . $uri;
-        }
-
-        return $uri;
-    }
-
     /** @return array<mixed> */
     protected function buildOptions(AbstractEndpoint $endpoint): array
     {
         $options  = $this->optionBuilder ? ($this->optionBuilder)($endpoint) : [];
-        $params   = $endpoint->params();
+        $params   = $endpoint->queryParameters();
         $body     = $endpoint->body();
         $formData = $endpoint->formData();
 

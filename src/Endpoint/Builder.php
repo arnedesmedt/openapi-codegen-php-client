@@ -18,11 +18,7 @@ use function sprintf;
  */
 class Builder
 {
-    private bool $snakeCasedParams   = false;
-    private bool $snakeCasedBody     = false;
-    private bool $snakeCasedFormData = false;
-
-    public function __construct(private string $namespace)
+    public function __construct(private readonly string $namespace)
     {
     }
 
@@ -36,30 +32,6 @@ class Builder
         /** @var AbstractEndpoint $endpoint */
         $endpoint = new $className();
 
-        return $endpoint
-            ->setSnakeCasedParams($this->snakeCasedParams)
-            ->setSnakeCasedBody($this->snakeCasedBody)
-            ->setSnakeCasedFormData($this->snakeCasedFormData);
-    }
-
-    public function setSnakeCasedParams(bool $snakeCasedParams): self
-    {
-        $this->snakeCasedParams = $snakeCasedParams;
-
-        return $this;
-    }
-
-    public function setSnakeCasedBody(bool $snakeCasedBody): self
-    {
-        $this->snakeCasedBody = $snakeCasedBody;
-
-        return $this;
-    }
-
-    public function setSnakeCasedFormData(bool $snakeCasedFormData): self
-    {
-        $this->snakeCasedFormData = $snakeCasedFormData;
-
-        return $this;
+        return $endpoint;
     }
 }

@@ -6,8 +6,7 @@ namespace ADS\OpenApi\Codegen\Endpoint;
 
 use function array_key_exists;
 use function rtrim;
-use function strlen;
-use function substr_compare;
+use function str_ends_with;
 
 trait SpecialKeySupportLogic
 {
@@ -23,7 +22,7 @@ trait SpecialKeySupportLogic
 
     private function removeArrayBrackets(string $key): string
     {
-        if (substr_compare($key, '[]', -strlen('[]')) === 0) {
+        if (str_ends_with($key, '[]')) {
             return rtrim($key, '[]');
         }
 

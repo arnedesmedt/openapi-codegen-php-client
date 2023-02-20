@@ -1,4 +1,4 @@
-package org.elasticsearch.codegen;
+package org.arnedesmedt.codegen;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -73,7 +73,6 @@ public class OpenApiGeneratorPhpClient extends PhpClientCodegen implements Codeg
 
     supportingFiles.add(new SupportingFile("Client.mustache", "", clientClass.concat(".php")));
     supportingFiles.add(new SupportingFile("README.mustache", "", "README.md"));
-    supportingFiles.add(new SupportingFile("mock.mustache", "", clientClass.concat("Mock.php")));
 
     if (additionalProperties.containsKey("factories")) {
         this.setSrcBasePath("Factory");

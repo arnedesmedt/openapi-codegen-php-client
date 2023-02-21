@@ -52,8 +52,8 @@ use ADS\ValueObjects\ValueObject;
                 ->endpoint('{{classname}}'){{#pathParams.0}}
                 ->setPathParameters($pathParameters){{/pathParams.0}}{{#queryParams.0}}
                 ->setQueryParameters($queryParameters){{/queryParams.0}}{{#bodyParams.0}}
-                ->setBody({{^bodyParams.0.required}}$body !== null ? {{/bodyParams.0.required}}{{#bodyParams.0.isPrimitiveType}}{{^bodyParams.0.isFreeFormObject}}[]{{/bodyParams.0.isFreeFormObject}}{{/bodyParams.0.isPrimitiveType}}{{#bodyParams.0.isFreeFormObject}}(array) $body{{/bodyParams.0.isFreeFormObject}}{{^bodyParams.0.isFreeFormObject}}{{^bodyParams.0.isPrimitiveType}}$body{{^bodyParams.0.isContainer}}->toArray(){{/bodyParams.0.isContainer}}{{/bodyParams.0.isPrimitiveType}}{{/bodyParams.0.isFreeFormObject}}{{^bodyParams.0.required}} : []{{/bodyParams.0.required}}){{/bodyParams.0}}{{#formParams.0}}
-                ->setFormData({{#formParams.0.required}}$form->toArray(){{/formParams.0.required}}{{^formParams.0.required}}$form ? $form->toArray() : []{{/formParams.0.required}}){{/formParams.0}}
+                ->setBody({{^bodyParams.0.required}}$body !== null ? {{/bodyParams.0.required}}{{#bodyParams.0.isPrimitiveType}}{{^bodyParams.0.isFreeFormObject}}[]{{/bodyParams.0.isFreeFormObject}}{{/bodyParams.0.isPrimitiveType}}{{#bodyParams.0.isFreeFormObject}}(array) $body{{/bodyParams.0.isFreeFormObject}}{{^bodyParams.0.isFreeFormObject}}{{^bodyParams.0.isPrimitiveType}}$body{{/bodyParams.0.isPrimitiveType}}{{/bodyParams.0.isFreeFormObject}}{{^bodyParams.0.required}} : []{{/bodyParams.0.required}}){{/bodyParams.0}}{{#formParams.0}}
+                ->setFormData($form{{^formParams.0.required}} ?? []{{/formParams.0.required}}){{/formParams.0}}
         );
 
         return {{#responses.0.isArray}}{{^responses.0.primitiveType}}array_map(

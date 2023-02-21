@@ -38,27 +38,15 @@ use ADS\ValueObjects\ValueObject;
         {{formParams.0.baseType}}{{^formParams.0.required}}|null{{/formParams.0.required}} $form{{^formParams.0.required}} = null{{/formParams.0.required}}
     {{/formParams.0}}){{#responses.0.schema}}: {{#responses.0.primitiveType}}{{responses.0.dataType}}{{/responses.0.primitiveType}}{{#responses.0.isArray}}{{^responses.0.primitiveType}}{{responses.0.dataType}}{{/responses.0.primitiveType}}{{/responses.0.isArray}}{{^responses.0.isArray}}{{^responses.0.primitiveType}}{{responses.0.baseType}}{{/responses.0.primitiveType}}{{/responses.0.isArray}}{{/responses.0.schema}}{{^pathParams.0}}{{^queryParams.0}}{{^bodyParams.0}}{{^formParams.0}}
    {{/formParams.0}}{{/bodyParams.0}}{{/queryParams.0}}{{/pathParams.0}} {
-        {{#pathParams.0}}
-        /** @var array<string, string|ValueObject> $pathParameters */
-        $pathParameters = [
-            {{#pathParams}}
-            '{{baseName}}' => ${{paramName}},
-            {{/pathParams}}
-        ];
-
-        {{/pathParams.0}}{{#responses.0.schema}}/** @var {{#responses.0.primitiveType}}{{responses.0.dataType}}{{#responses.0.isFreeFormObject}}<mixed>{{/responses.0.isFreeFormObject}}{{#responses.0.isArray}}<{{responses.0.baseType}}>{{/responses.0.isArray}}{{/responses.0.primitiveType}}{{^responses.0.primitiveType}}array<string, {{#responses.0.isArray}}array<string, mixed>{{/responses.0.isArray}}{{^responses.0.isArray}}mixed{{/responses.0.isArray}}>{{/responses.0.primitiveType}} $response */{{/responses.0.schema}}
+        {{#responses.0.schema}}
+        /** @var {{#responses.0.primitiveType}}{{responses.0.dataType}}{{#responses.0.isFreeFormObject}}<mixed>{{/responses.0.isFreeFormObject}}{{#responses.0.isArray}}<{{responses.0.baseType}}>{{/responses.0.isArray}}{{/responses.0.primitiveType}}{{^responses.0.primitiveType}}array<string, {{#responses.0.isArray}}array<string, mixed>{{/responses.0.isArray}}{{^responses.0.isArray}}mixed{{/responses.0.isArray}}>{{/responses.0.primitiveType}} $response */{{/responses.0.schema}}
         $response = $this->performRequest(
-            {{classname}}::fromArray(
-                [
-                    {{#pathParams}}
-                    '{{baseName}}' => ${{paramName}},
-                    {{/pathParams}}{{#queryParams.0}}
-                    'query' => $query,
-                    {{/queryParams.0}}{{#bodyParams.0}}
-                    'body' => $body,
-                    {{/bodyParams.0}}{{#formParams.0}}
-                    'form' => $form,
-                    {{/formParams.0}}
+            Endpoint\{{classname}}::fromArray(
+                [{{#pathParams}}
+                    '{{baseName}}' => ${{paramName}},{{/pathParams}}{{#queryParams.0}}
+                    'query' => $query,{{/queryParams.0}}{{#bodyParams.0}}
+                    'body' => $body,{{/bodyParams.0}}{{#formParams.0}}
+                    'form' => $form,{{/formParams.0}}
                 ],
             ),
         );

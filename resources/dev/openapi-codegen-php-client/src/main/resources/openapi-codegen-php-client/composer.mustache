@@ -35,7 +35,7 @@
     },
     "autoload": {
         "psr-4": {
-            "{{invokerPackage}}\\": ""
+            "{{composerPackage}}\\": ""
         }
     },
     "minimum-stability": "dev",
@@ -47,8 +47,11 @@
         },
         "sort-packages": true
     },
+    "scripts-descriptions": {
+        "tests": "Run all tests"
+    },
     "scripts": {
-        "test": [
+        "tests": [
             "vendor/bin/phpcs",
             "vendor/bin/phpstan analyze --no-progress",
             "vendor/bin/phpmd src text phpmd.xml",

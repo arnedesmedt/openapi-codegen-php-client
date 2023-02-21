@@ -43,10 +43,10 @@
         "sort-packages": true
     },
     "scripts-descriptions": {
-        "test": "Run all tests"
+        "tests": "Run all tests"
     },
     "scripts": {
-        "test": [
+        "tests": [
             "vendor/bin/phpcs",
             "vendor/bin/phpstan analyze --no-progress",
             "vendor/bin/phpmd src text phpmd.xml",

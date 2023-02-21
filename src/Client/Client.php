@@ -4,36 +4,35 @@ declare(strict_types=1);
 
 namespace ADS\OpenApi\Codegen\Client;
 
-use ADS\OpenApi\Codegen\Endpoint\AbstractEndpoint;
-use ADS\OpenApi\Codegen\Endpoint\Builder;
+use ADS\OpenApi\Codegen\Endpoint\Endpoint;
 use ADS\Util\ArrayUtil;
 use Closure;
+use EventEngine\Data\ImmutableRecord;
 
 use function array_key_exists;
 use function array_shift;
-use function count;
 use function is_array;
 
 abstract class Client
 {
+    private const ENDPOINT_PROPERTIES_OPTIONS_MAP = [
+        'query' => 'query',
+        'body' => 'json',
+        'form' => 'form_params',
+    ];
+
     /** @param array<string, mixed> $configs */
     public function __construct(
         private readonly ClientWrapper $client,
-        private readonly Builder $endpointBuilder,
         private readonly array $configs = [],
         private readonly Closure|null $optionBuilder = null,
     ) {
     }
 
-    protected function endpoint(string $name): AbstractEndpoint
+    protected function performRequest(Endpoint $endpoint): mixed
     {
-        return ($this->endpointBuilder)($name);
-    }
-
-    protected function performRequest(AbstractEndpoint $endpoint): mixed
-    {
-        $method  = $endpoint->method();
-        $uri     = $endpoint->uri();
+        $method = $endpoint->method();
+        $uri = $endpoint->uri();
         $options = $this->buildOptions($endpoint);
 
         $response = $this->client->request($method, $uri, $options);
@@ -68,23 +67,24 @@ abstract class Client
     }
 
     /** @return array<mixed> */
-    protected function buildOptions(AbstractEndpoint $endpoint): array
+    protected function buildOptions(Endpoint $endpoint): array
     {
-        $options  = $this->optionBuilder ? ($this->optionBuilder)($endpoint) : [];
-        $params   = $endpoint->queryParameters();
-        $body     = $endpoint->body();
-        $formData = $endpoint->formData();
+        $options = $this->optionBuilder ? ($this->optionBuilder)($endpoint) : [];
 
-        if (! array_key_exists('query', $options) && count($params) > 0) {
-            $options['query'] = $params;
-        }
+        foreach (self::ENDPOINT_PROPERTIES_OPTIONS_MAP as $propertyName => $option) {
+            $property = $endpoint->{$propertyName}();
 
-        if (! array_key_exists('json', $options) && is_array($body)) {
-            $options['json'] = $body;
-        }
+            if (
+                array_key_exists($option, $options)
+                || ! ($property instanceof ImmutableRecord)
+                || empty($property->toArray())
+            ) {
+                continue;
+            }
 
-        if (! array_key_exists('form_params', $options) && is_array($formData)) {
-            $options['form_params'] = $formData;
+            $data = $property->toArray();
+            $data = ArrayUtil::rejectNullValues($data);
+            $options[$option] = ArrayUtil::rejectEmptyArrayValues($data);
         }
 
         return $options;

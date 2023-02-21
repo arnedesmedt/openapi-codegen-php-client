@@ -3,3 +3,12 @@ parameters:
     paths:
         - src
         - tests
+    ignoreErrors:
+        -
+            message: '#arrayPropItemTypeMap\(\) is unused.$#'
+            path: ./tests/*
+services:
+    -
+        class: ADS\JsonImmutableObjects\PhpStan\PropertiesExtension
+        tags:
+            - phpstan.properties.readWriteExtension

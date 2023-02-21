@@ -1,32 +1,39 @@
 <?php
-
 declare(strict_types=1);
 
 namespace {{package}};
 
-use ADS\OpenApi\Codegen\Endpoint\AbstractEndpoint;
+use ADS\OpenApi\Codegen\Endpoint\Endpoint;
+use ADS\OpenApi\Codegen\Endpoint\EndpointLogic;
+use EventEngine\Data\ImmutableRecord;
+use EventEngine\Data\ImmutableRecordLogic;
+{{#operations}}
+{{#operation}}
+{{#queryParams.0}}
+use {{invokerPackage}}\Model\{{operationIdCamelCase}}Query;
+{{/queryParams.0}}
+{{#bodyParams.0}}
+use {{invokerPackage}}\Model\{{#bodyParams.0.isContainer}}{{bodyParams.0.dataType}}{{/bodyParams.0.isContainer}}{{^bodyParams.0.isContainer}}{{bodyParams.0.baseType}}{{/bodyParams.0.isContainer}};
+{{/bodyParams.0}}
+{{#formParams.0}}
+use {{invokerPackage}}\Model\{{formParams.0.baseType}};
+{{/formParams.0}}
+{{/operation}}
+{{/operations}}
 
-class {{classname}} extends AbstractEndpoint
+class {{classname}} implements Endpoint
 {
 {{#operations}}
 {{#operation}}
-    protected string $method = '{{httpMethod}}';
+    use EndpointLogic;
 
-    protected string $uri = '{{path}}';
-{{#pathParams.0}}
-
-    /** @var array<string> */
-    protected array $pathParameterNames = [{{#pathParams}}
-        '{{baseName}}',{{/pathParams}}
-    ];
-{{/pathParams.0}}
-{{#queryParams.0}}
-
-    /** @var array<string> */
-    protected array $queryParameterNames = [{{#queryParams}}
-        '{{baseName}}',{{/queryParams}}
-    ];
-{{/queryParams.0}}
+    private string $method = '{{httpMethod}}';
+    private string $uri = '{{path}}';{{#pathParams}}
+    /** @var {{dataType}}{{#isNullable}}|null{{/isNullable}}{{^required}}{{^isNullable}}|null{{/isNullable}}{{/required}} */
+    private ${{baseName}}{{#defaultValue}} = {{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}{{#isNullable}} = null{{/isNullable}}{{^required}}{{^isNullable}} = null{{/isNullable}}{{/required}}{{/defaultValue}};{{/pathParams}}{{#queryParams.0}}
+    private {{operationIdCamelCase}}Query|null $query = null;{{/queryParams.0}}{{#bodyParams.0}}
+    private {{#bodyParams.0.isContainer}}{{bodyParams.0.dataType}}{{/bodyParams.0.isContainer}}{{^bodyParams.0.isContainer}}{{bodyParams.0.baseType}}{{/bodyParams.0.isContainer}}{{^bodyParams.0.required}}|null{{/bodyParams.0.required}} $body{{^bodyParams.0.required}} = null{{/bodyParams.0.required}};{{/bodyParams.0}}{{#formParams.0}}
+    private {{formParams.0.baseType}}{{^formParams.0.required}}|null{{/formParams.0.required}} $form{{^formParams.0.required}} = null{{/formParams.0.required}};{{/formParams.0}}
 {{/operation}}
 {{/operations}}
 }

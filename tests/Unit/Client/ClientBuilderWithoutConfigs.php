@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace ADS\OpenApi\Codegen\Tests\Unit\Client;
 
 use ADS\OpenApi\Codegen\ClientBuilder\ClientBuilder;
-use ADS\OpenApi\Codegen\Endpoint\Builder as EndpointBuilder;
 
 class ClientBuilderWithoutConfigs extends ClientBuilder
 {
@@ -13,13 +12,7 @@ class ClientBuilderWithoutConfigs extends ClientBuilder
     {
         return new Client(
             $this->client(),
-            $this->endpointBuilder(),
             [],
         );
-    }
-
-    protected function endpointBuilder(): EndpointBuilder
-    {
-        return new EndpointBuilder('ADS\OpenApi\Codegen\Tests\Unit\Endpoint');
     }
 }

@@ -4,7 +4,7 @@ WORKDIR /build
 COPY . /build/
 RUN --mount=type=cache,target=/root/.m2 mvn -f /build/pom.xml clean package
 
-FROM openapitools/openapi-generator-cli:v6.2.1 as runner
+FROM openapitools/openapi-generator-cli:v5.3.0 as runner
 
 ENV OPENAPI_GEN_ROOT_DIR /opt/openapi-generator
 ENV OPENAPI_GEN_JARS_DIR ${OPENAPI_GEN_ROOT_DIR}/jars

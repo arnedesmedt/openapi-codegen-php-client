@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace ADS\OpenApi\Codegen\Tests\Unit\Endpoint;
 
-use ADS\OpenApi\Codegen\Endpoint\AbstractEndpoint;
+use ADS\OpenApi\Codegen\Endpoint\Endpoint;
+use ADS\OpenApi\Codegen\Endpoint\EndpointLogic;
 
-class TestEndpoint extends AbstractEndpoint
+class TestEndpoint implements Endpoint
 {
-    protected string $method = 'GET';
+    use EndpointLogic;
 
-    protected string $uri = '/test/{idTest}';
+    private string $method = 'GET';
 
-    /** @var array<string> */
-    protected array $pathParameterNames = ['idTest'];
+    private string $uri = '/test/{idTest}';
 
-    /** @var array<string> */
-    protected array $queryParameterNames = [
-        'testQuery',
-        'arrayQuery[]',
-    ];
+    private int $idTest;
+    private TestQuery|null $query = null;
+    private TestData|null $body = null;
+    private TestData|null $form = null;
 }

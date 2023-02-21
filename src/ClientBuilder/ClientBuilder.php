@@ -8,7 +8,6 @@ use ADS\OpenApi\Codegen\Client\Client;
 use ADS\OpenApi\Codegen\Client\ClientWrapper;
 use ADS\OpenApi\Codegen\Client\GuzzleClientWrapper;
 use ADS\OpenApi\Codegen\Client\SymfonyClientWrapper;
-use ADS\OpenApi\Codegen\Endpoint\Builder as EndpointBuilder;
 use GuzzleHttp\Client as GuzzleClient;
 use RuntimeException;
 use Symfony\Contracts\HttpClient\HttpClientInterface as SymfonyClient;
@@ -45,8 +44,6 @@ abstract class ClientBuilder
      * Return the configured client.
      */
     abstract public function build(): Client;
-
-    abstract protected function endpointBuilder(): EndpointBuilder;
 
     /** @return array<string, mixed> */
     protected function configs(string $path): array

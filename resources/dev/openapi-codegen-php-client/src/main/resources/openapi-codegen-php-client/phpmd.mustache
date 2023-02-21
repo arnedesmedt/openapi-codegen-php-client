@@ -14,7 +14,9 @@
         <exclude name="StaticAccess"/>
     </rule>
 
-    <rule ref="rulesets/codesize.xml" />
+    <rule ref="rulesets/codesize.xml">
+        <exclude name="TooManyPublicMethods"/>
+    </rule>
 
     <rule ref="rulesets/design.xml">
         <exclude name="EmptyCatchBlock"/>
@@ -22,6 +24,7 @@
 
     <rule ref="rulesets/naming.xml">
         <exclude name="LongVariable"/>
+        <exclude name="LongClassName"/>
     </rule>
 
     <rule ref="rulesets/controversial.xml">

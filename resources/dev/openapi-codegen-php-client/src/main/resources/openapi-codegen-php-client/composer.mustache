@@ -54,7 +54,7 @@
         "tests": [
             "vendor/bin/phpcs",
             "vendor/bin/phpstan analyze --no-progress",
-            "vendor/bin/phpmd src text phpmd.xml",
+            "vendor/bin/phpmd . text phpmd.xml --exclude vendor resources .openapi-generator",
             "vendor/bin/rector --dry-run --no-progress-bar"
         ]
     }

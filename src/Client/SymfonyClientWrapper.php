@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace ADS\OpenApi\Codegen\Client;
 
-use Client\ClientWrapper;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -20,15 +19,10 @@ class SymfonyClientWrapper implements ClientWrapper
     ) {
     }
 
-    public function client(): HttpClientInterface
-    {
-        return $this->client;
-    }
-
     /** @inheritDoc */
     public function request(string $method, string $uri, array $options = []): array
     {
-        $response = $this->client()->request($method, $uri, $options);
+        $response = $this->client->request($method, $uri, $options);
 
         return $this->contentFromResponse($response);
     }

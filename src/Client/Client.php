@@ -7,7 +7,6 @@ namespace ADS\OpenApi\Codegen\Client;
 use ADS\OpenApi\Codegen\Endpoint\AbstractEndpoint;
 use ADS\OpenApi\Codegen\Endpoint\Builder;
 use ADS\Util\ArrayUtil;
-use Client\ClientWrapper;
 use Closure;
 
 use function array_key_exists;
@@ -72,7 +71,7 @@ abstract class Client
     protected function buildOptions(AbstractEndpoint $endpoint): array
     {
         $options  = $this->optionBuilder ? ($this->optionBuilder)($endpoint) : [];
-        $params   = $endpoint->params();
+        $params   = $endpoint->queryParameters();
         $body     = $endpoint->body();
         $formData = $endpoint->formData();
 

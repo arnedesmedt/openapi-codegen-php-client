@@ -26,7 +26,8 @@
     },
     "autoload" : {
         "psr-4" : {
-            "ADS\\OpenApi\\Codegen\\" : "src/"
+            "ADS\\OpenApi\\Codegen\\" : "src/",
+            "ADS\\OpenApi\\Codegen\\Tests\\": "tests/"
         }
     },
     "minimum-stability": "dev",

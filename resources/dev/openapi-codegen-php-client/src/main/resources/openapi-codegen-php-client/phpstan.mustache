@@ -1,0 +1,20 @@
+parameters:
+    level: max
+    paths:
+        - Endpoint
+        - Model
+        - Factory
+        - Client.php
+        - ClientBuilder.php
+    ignoreErrors:
+        -
+            message: '#arrayPropItemTypeMap\(\) is unused.$#'
+            path: ./Model/*
+        -
+            message: '#maxValues\(\) is unused.$#'
+            path: ./Model/*
+services:
+    -
+        class: ADS\JsonImmutableObjects\PhpStan\PropertiesExtension
+        tags:
+            - phpstan.properties.readWriteExtension

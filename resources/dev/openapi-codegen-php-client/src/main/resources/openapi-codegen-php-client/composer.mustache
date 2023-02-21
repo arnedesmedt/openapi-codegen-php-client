@@ -1,0 +1,58 @@
+{
+    "name": "{{packageName}}",
+    "description": "{{name}}",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Arne De Smedt",
+            "email": "arne.desmedt@team.blue"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "arnedesmedt/openapi-codegen-php-client": "~1.0",
+        "team-blue/common": "~0.1"
+    },
+    "require-dev": {
+        "combell/platforms-php-coding-standard": "~0.1",
+        "phpmd/phpmd": "~2.0",
+        "phpro/grumphp": "~1.0",
+        "phpstan/phpstan": "~1.0",
+        "rector/rector": "~0.1",
+        "squizlabs/php_codesniffer": "~3.0"
+
+    },
+    "repositories": {
+        "gitlab.com/11226300": {
+            "type": "composer",
+            "url": "https://gitlab.com/api/v4/group/11226300/-/packages/composer/packages.json"
+        },
+        "git.combell-ops.net/186": {
+            "type": "composer",
+            "url": "https://git.combell-ops.net/api/v4/group/186/-/packages/composer/packages.json"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "{{invokerPackage}}\\": ""
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpro/grumphp": true
+        },
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": [
+            "vendor/bin/phpcs",
+            "vendor/bin/phpstan analyze --no-progress",
+            "vendor/bin/phpmd src text phpmd.xml",
+            "vendor/bin/rector --dry-run --no-progress-bar"
+        ]
+    }
+}

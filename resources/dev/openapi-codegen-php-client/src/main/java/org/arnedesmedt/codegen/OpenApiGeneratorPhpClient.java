@@ -73,6 +73,12 @@ public class OpenApiGeneratorPhpClient extends PhpClientCodegen implements Codeg
 
     supportingFiles.add(new SupportingFile("Client.mustache", "", clientClass.concat(".php")));
     supportingFiles.add(new SupportingFile("README.mustache", "", "README.md"));
+    supportingFiles.add(new SupportingFile("phpstan.mustache", "", "phpstan.neon"));
+    supportingFiles.add(new SupportingFile("phpcs.mustache", "", "phpcs.xml"));
+    supportingFiles.add(new SupportingFile("composer.mustache", "", "composer.json"));
+    supportingFiles.add(new SupportingFile("rector.mustache", "", "rector.php"));
+    supportingFiles.add(new SupportingFile("phpmd.mustache", "", "phpmd.xml"));
+    supportingFiles.add(new SupportingFile("grumphp.mustache", "", "grumphp.yml"));
 
     if (additionalProperties.containsKey("factories")) {
         this.setSrcBasePath("Factory");

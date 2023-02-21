@@ -11,8 +11,8 @@
     ],
     "require": {
         "php": "^8.1",
-        "arnedesmedt/openapi-codegen-php-client": "~1.0",
-        "team-blue/common": "~0.1"
+        {{#additionalPackages}}"{{name}}": "{{version}}",{{/additionalPackages}}
+        "arnedesmedt/openapi-codegen-php-client": "~1.0"
     },
     "require-dev": {
         "combell/platforms-php-coding-standard": "~0.1",

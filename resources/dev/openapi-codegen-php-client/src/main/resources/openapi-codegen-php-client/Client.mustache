@@ -8,6 +8,7 @@ use ADS\ValueObjects\ValueObject;
 {{#models}}{{#model}}use {{importPath}};
 {{/model}}{{/models}}use ADS\OpenApi\Codegen\Client\Client as AbstractClient;
 
+/** @SuppressWarnings(PHPMD.CouplingBetweenObjects) */
 {{#clientClassQualifier}}{{{.}}} {{/clientClassQualifier}}class {{clientClass}} extends AbstractClient
 {{=<% %>=}}{<%#apiInfo%><%={{ }}=%>{{#apis}}{{#operations}}{{#operation}}
     /**

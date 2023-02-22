@@ -39,7 +39,7 @@ class {{classname}} implements Endpoint, SpecialKeySupport
     private {{#bodyParams.0.isContainer}}{{bodyParams.0.dataType}}{{/bodyParams.0.isContainer}}{{^bodyParams.0.isContainer}}{{bodyParams.0.baseType}}{{/bodyParams.0.isContainer}}{{^bodyParams.0.required}}|null{{/bodyParams.0.required}} $body{{^bodyParams.0.required}} = null{{/bodyParams.0.required}};{{/bodyParams.0}}{{#formParams.0}}
     private {{formParams.0.baseType}}{{^formParams.0.required}}|null{{/formParams.0.required}} $form{{^formParams.0.required}} = null{{/formParams.0.required}};{{/formParams.0}}
 
-    /** @inheritDoc */
+    /** @return array<string,string> */
     public function keyMapping(): array
     {
         return [{{#pathParams}}

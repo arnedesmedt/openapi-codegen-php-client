@@ -70,7 +70,7 @@ final class {{classname}}{{^getIsAnyType}} implements SpecialKeySupport, JsonSch
         ];
     }
 
-    /** @inheritDoc */
+    /** @return array<string,string> */
     public function keyMapping(): array
     {
         return [{{#vars}}

@@ -16,15 +16,39 @@
 
     <rule ref="rulesets/codesize.xml">
         <exclude name="TooManyPublicMethods"/>
+        <exclude name="TooManyFields"/>
+        <exclude name="TooManyMethods"/>
     </rule>
 
     <rule ref="rulesets/design.xml">
         <exclude name="EmptyCatchBlock"/>
+        <exclude name="CouplingBetweenObjects"/>
     </rule>
 
     <rule ref="rulesets/naming.xml">
         <exclude name="LongVariable"/>
         <exclude name="LongClassName"/>
+        <exclude name="ShortVariable"/>
+        <exclude name="ShortMethodName"/>
+        <exclude name="ShortClassName"/>
+    </rule>
+
+    <rule ref="rulesets/naming.xml/ShortVariable">
+        <properties>
+            <property name="minimum" value="2"/>
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/naming.xml/ShortMethodName">
+        <properties>
+            <property name="minimum" value="2"/>
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/naming.xml/ShortClassName">
+        <properties>
+            <property name="minimum" value="2"/>
+        </properties>
     </rule>
 
     <rule ref="rulesets/controversial.xml">

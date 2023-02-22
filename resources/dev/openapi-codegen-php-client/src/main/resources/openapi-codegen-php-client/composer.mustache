@@ -10,8 +10,8 @@
         }
     ],
     "require": {
-        "php": "^8.1",
-        {{#additionalPackages}}"{{name}}": "{{version}}",{{/additionalPackages}}
+        "php": "^8.1",{{#additionalPackages}}
+        "{{name}}": "{{version}}",{{/additionalPackages}}
         "arnedesmedt/openapi-codegen-php-client": "~1.0"
     },
     "require-dev": {

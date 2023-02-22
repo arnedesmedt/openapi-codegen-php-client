@@ -23,18 +23,14 @@ final class {{classname}}{{^getIsAnyType}} implements SpecialKeySupport, JsonSch
         return '{{propertyName}}';
     }
 
-    /**
-    * @inheritDoc
-    */
+    /** @inheritDoc */
     public static function mapping(): array
     {
         return [{{#mappedModels}}
             '{{mappingName}}' => {{modelName}}::class,{{/mappedModels}}];
     }
 
-    /**
-    * @inheritDoc
-    */
+    /** @inheritDoc */
     public static function jsonSchemaAwareRecords(): array
     {
         return [{{#interfaceModels}}
@@ -50,18 +46,14 @@ final class {{classname}}{{^getIsAnyType}} implements SpecialKeySupport, JsonSch
     private ${{name}}{{#defaultValue}} = {{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}{{#isNullable}} = null{{/isNullable}}{{^required}}{{^isNullable}} = null{{/isNullable}}{{/required}}{{/defaultValue}};
 {{/vars}}
 {{#vars}}
-    /**
-    * @return {{#complexType}}{{^isContainer}}{{complexType}}{{/isContainer}}{{#isContainer}}{{baseType}}{{/isContainer}}{{/complexType}}{{^complexType}}{{baseType}}{{/complexType}}{{#isContainer}}<{{^items.complexType}}{{#items.isContainer}}mixed{{/items.isContainer}}{{^items.isContainer}}{{items.baseType}}{{/items.isContainer}}{{/items.complexType}}{{#items.complexType}}{{{.}}}{{/items.complexType}}>{{/isContainer}}{{#isFreeFormObject}}<mixed>{{/isFreeFormObject}}{{#isNullable}}|null{{/isNullable}}{{^required}}{{^isNullable}}|null{{/isNullable}}{{/required}}
-    */
+    /** @return {{#complexType}}{{^isContainer}}{{complexType}}{{/isContainer}}{{#isContainer}}{{baseType}}{{/isContainer}}{{/complexType}}{{^complexType}}{{baseType}}{{/complexType}}{{#isContainer}}<{{^items.complexType}}{{#items.isContainer}}mixed{{/items.isContainer}}{{^items.isContainer}}{{items.baseType}}{{/items.isContainer}}{{/items.complexType}}{{#items.complexType}}{{{.}}}{{/items.complexType}}>{{/isContainer}}{{#isFreeFormObject}}<mixed>{{/isFreeFormObject}}{{#isNullable}}|null{{/isNullable}}{{^required}}{{^isNullable}}|null{{/isNullable}}{{/required}} */
     public function {{getter}}()
     {
         return $this->{{name}};
     }
 {{/vars}}
 
-    /**
-    * @return array<string, string>
-    */
+    /** @return array<string, string> */
     private static function arrayPropItemTypeMap(): array
     {
         return [{{#vars}}{{#isListContainer}}{{^items.isContainer}}
@@ -70,9 +62,7 @@ final class {{classname}}{{^getIsAnyType}} implements SpecialKeySupport, JsonSch
         ];
     }
 
-    /**
-    * @return array<string, int>
-    */
+    /** @return array<string, int> */
     private static function maxValues(): array
     {
         return [{{#vars}}{{#maximum}}
@@ -80,22 +70,12 @@ final class {{classname}}{{^getIsAnyType}} implements SpecialKeySupport, JsonSch
         ];
     }
 
-    public function convertKeyForRecord(string $key): string
+    /** @inheritDoc */
+    public funciton keyMapping(): array
     {
-        $map = [{{#vars}}
+        return [{{#vars}}
             '{{baseName}}' => '{{name}}',{{/vars}}
         ];
-
-        return $this->convertByMap($key, $map);
-    }
-
-    public function convertKeyForArray(string $key): string
-    {
-        $map = [{{#vars}}
-            '{{name}}' => '{{baseName}}',{{/vars}}
-        ];
-
-        return $this->convertByMap($key, $map);
     }
 // phpcs:enable
 {{/getIsAnyType}}}{{/model}}{{/models}}

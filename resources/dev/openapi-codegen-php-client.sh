@@ -41,6 +41,7 @@ docker run --rm -v "${rootdir}":/local ${generatorimage} generate -g openapi-cod
 cd "${rootdir}" && sudo chown -R "$(id -u):$(id -g)" Client.php README.md composer.json grumphp.yml phpcs.xml phpmd.xml phpstan.neon rector.php Model Endpoint Factory
 # Exit code of phpcbf is 1 if all is fixed https://github.com/squizlabs/PHP_CodeSniffer/issues/2898
 cd "${rootdir}" && (vendor/bin/phpcbf --extensions=php --report=full ./Client.php Model/ Endpoint/ Factory/ || true)
+cd "${rootdir}" && vendor/bin/rector
 
 if [ -x "${rootdir}/resources/scripts/after_run.sh" ]
 then

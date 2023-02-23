@@ -46,7 +46,7 @@ use ADS\ValueObjects\ValueObject;
         {{#responses.0.schema}}
         /** @var {{#responses.0.primitiveType}}{{responses.0.dataType}}{{#responses.0.isFreeFormObject}}<mixed>{{/responses.0.isFreeFormObject}}{{#responses.0.isArray}}<{{responses.0.baseType}}>{{/responses.0.isArray}}{{/responses.0.primitiveType}}{{^responses.0.primitiveType}}array<string, {{#responses.0.isArray}}array<string, mixed>{{/responses.0.isArray}}{{^responses.0.isArray}}mixed{{/responses.0.isArray}}>{{/responses.0.primitiveType}} $response */{{/responses.0.schema}}
         $response = $this->performRequest(
-            Endpoint\{{classname}}::fromArray(
+            Endpoint\{{classname}}::fromRecordData(
                 [{{#pathParams}}
                     '{{baseName}}' => ${{paramName}},{{/pathParams}}{{#queryParams.0}}
                     'query' => $query,{{/queryParams.0}}{{#bodyParams.0}}

@@ -24,23 +24,12 @@ class TestQuery implements JsonSchemaAwareRecord, SpecialKeySupport
         return ['arrayQuery' => 'string'];
     }
 
-    public function convertKeyForRecord(string $key): string
+    /** @return array<string,string> */
+    protected function keyMapping(): array
     {
-        $map = [
+        return [
             'testQuery' => 'testQuery',
             'arrayQuery[]' => 'arrayQuery',
         ];
-
-        return $this->convertByMap($key, $map);
-    }
-
-    public function convertKeyForArray(string $key): string
-    {
-        $map = [
-            'testQuery' => 'testQuery',
-            'arrayQuery' => 'arrayQuery[]',
-        ];
-
-        return $this->convertByMap($key, $map);
     }
 }

@@ -80,6 +80,7 @@ public class OpenApiGeneratorPhpClient extends PhpClientCodegen implements Codeg
     supportingFiles.add(new SupportingFile("phpmd.mustache", "", "phpmd.xml"));
     supportingFiles.add(new SupportingFile("grumphp.mustache", "", "grumphp.yml"));
     supportingFiles.add(new SupportingFile("gitignore.mustache", "", ".gitignore"));
+    supportingFiles.add(new SupportingFile("mock.mustache", "", clientClass.concat("Mock.php")));
 
     if (additionalProperties.containsKey("factories")) {
         this.setSrcBasePath("Factory");

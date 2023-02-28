@@ -14,7 +14,9 @@ interface Endpoint extends ImmutableRecord
 
     public function query(): ImmutableRecord|null;
 
-    public function body(): ImmutableRecord|null;
+    /** @return ImmutableRecord|array<mixed>|null */
+    public function body(): ImmutableRecord|array|null;
 
-    public function form(): ImmutableRecord|null;
+    /** @return ImmutableRecord|array<mixed>|null */
+    public function form(): ImmutableRecord|array|null;
 }

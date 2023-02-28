@@ -19,6 +19,9 @@ use function strval;
 /**
  * @property string $method
  * @property string $uri
+ * @property ImmutableRecord|null $query
+ * @property ImmutableRecord|array<mixed>|null $body
+ * @property ImmutableRecord|array<mixed>|null $form
  */
 trait EndpointLogic
 {
@@ -27,6 +30,11 @@ trait EndpointLogic
     public function method(): string
     {
         return $this->method;
+    }
+
+    public function uriTemplate(): string
+    {
+        return $this->uri;
     }
 
     public function uri(): string
@@ -59,12 +67,14 @@ trait EndpointLogic
         return $this->query ?? null;
     }
 
-    public function body(): ImmutableRecord|null
+    /** @return ImmutableRecord|array<mixed>|null */
+    public function body(): ImmutableRecord|array|null
     {
         return $this->body ?? null;
     }
 
-    public function form(): ImmutableRecord|null
+    /** @return ImmutableRecord|array<mixed>|null */
+    public function form(): ImmutableRecord|array|null
     {
         return $this->form ?? null;
     }

@@ -19,4 +19,7 @@ interface Endpoint extends ImmutableRecord
 
     /** @return ImmutableRecord|array<mixed>|null */
     public function form(): ImmutableRecord|array|null;
+
+    /** @return array<string,mixed> */
+    public function toRequestParameters(): array;
 }

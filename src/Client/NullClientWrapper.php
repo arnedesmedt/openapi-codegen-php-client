@@ -11,4 +11,13 @@ class NullClientWrapper implements ClientWrapper
     {
         return [];
     }
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
+     * @phpstan-ignore-next-line
+     */
+    public function response()
+    {
+        return null;
+    }
 }

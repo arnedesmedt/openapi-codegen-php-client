@@ -12,4 +12,10 @@ interface ClientWrapper
      * @return array<mixed>
      */
     public function request(string $method, string $uri, array $options = []): array;
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+     * @phpstan-ignore-next-line
+     */
+    public function response();
 }

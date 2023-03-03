@@ -19,4 +19,15 @@ class TestEndpoint implements Endpoint
     private TestQuery|null $query = null;
     private TestData|null $body = null;
     private TestData|null $form = null;
+
+    /** @inheritDoc */
+    public function toRequestParameters(): array
+    {
+        return [
+            'idTest' => $this->idTest,
+            'query' => $this->query,
+            'body' => $this->body,
+            'form' => $this->form,
+        ];
+    }
 }

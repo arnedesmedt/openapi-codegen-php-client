@@ -14,6 +14,8 @@ use const JSON_THROW_ON_ERROR;
 
 class SymfonyClientWrapper implements ClientWrapper
 {
+    private ResponseInterface|null $response = null;
+
     public function __construct(
         private readonly HttpClientInterface $client,
     ) {
@@ -24,7 +26,9 @@ class SymfonyClientWrapper implements ClientWrapper
     {
         $response = $this->client->request($method, $uri, $options);
 
-        return $this->contentFromResponse($response);
+        return $this
+            ->setResponse($response)
+            ->contentFromResponse($response);
     }
 
     /** @return array<mixed> */
@@ -38,5 +42,17 @@ class SymfonyClientWrapper implements ClientWrapper
         $content = json_decode($responseContent, true, 512, JSON_THROW_ON_ERROR);
 
         return $content;
+    }
+
+    private function setResponse(ResponseInterface $response): self
+    {
+        $this->response = $response;
+
+        return $this;
+    }
+
+    public function response(): ResponseInterface|null
+    {
+        return $this->response;
     }
 }

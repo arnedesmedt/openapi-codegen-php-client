@@ -35,7 +35,7 @@ abstract class ClientBuilder
         };
     }
 
-    protected function client(): ClientWrapper
+    public function client(): ClientWrapper
     {
         return $this->client;
     }

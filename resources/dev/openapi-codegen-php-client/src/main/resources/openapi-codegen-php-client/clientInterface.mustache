@@ -16,19 +16,13 @@ use ADS\ValueObjects\ValueObject;
  */
 {{#clientClassQualifier}}{{{.}}} {{/clientClassQualifier}}interface {{clientClass}}Interface
 {{=<% %>=}}{<%#apiInfo%><%={{ }}=%>{{#apis}}{{#operations}}{{#operation}}
-    /**
-{{#summary}}
+    /**{{#summary}}
      * {{.}}
-     *
-{{/summary}}
-{{#notes}}
+     *{{/summary}}{{#notes}}
      * {{.}}
-     *
-{{/notes}}
-{{#externalDocs}}
+     *{{/notes}}{{#externalDocs}}
      * Documentation: {{url}}
-     *
-{{/externalDocs}}{{#pathParams}}
+     *{{/externalDocs}}{{#pathParams}}
      * @param {{dataType}}{{#isContainer}}<{{baseType}}>{{/isContainer}}{{^required}}|null{{/required}} ${{paramName}}{{/pathParams}}{{#bodyParams.0}}
      * @param {{#isContainer}}{{dataType}}<{{baseType}}>{{/isContainer}}{{^isContainer}}{{baseType}}{{#isMap}}<mixed>{{/isMap}}{{/isContainer}}{{^required}}|null{{/required}} $body{{/bodyParams.0}}
      *

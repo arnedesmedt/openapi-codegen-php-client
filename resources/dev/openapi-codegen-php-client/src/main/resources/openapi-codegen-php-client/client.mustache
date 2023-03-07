@@ -13,7 +13,7 @@ use ADS\ValueObjects\ValueObject;
  * @SuppressWarnings(PHPMD.ExcessivePublicCount)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
-{{#clientClassQualifier}}{{{.}}} {{/clientClassQualifier}}class {{clientClass}} extends AbstractClient
+{{#clientClassQualifier}}{{{.}}} {{/clientClassQualifier}}class {{clientClass}} implements ClientInterface extends AbstractClient
 {{=<% %>=}}{<%#apiInfo%><%={{ }}=%>{{#apis}}{{#operations}}{{#operation}}
     /**
 {{#summary}}

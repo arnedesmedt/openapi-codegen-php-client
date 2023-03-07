@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ADS\OpenApi\Codegen\ClientBuilder;
 
+use ADS\ClientMock\Mock;
 use ADS\OpenApi\Codegen\Client\Client;
 use ADS\OpenApi\Codegen\Client\ClientWrapper;
 use ADS\OpenApi\Codegen\Client\GuzzleClientWrapper;
@@ -44,6 +45,8 @@ abstract class ClientBuilder
      * Return the configured client.
      */
     abstract public function build(): Client;
+
+    abstract public static function mock(): Mock;
 
     /** @return array<string, mixed> */
     protected function configs(string $path): array

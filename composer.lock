@@ -4,8 +4,62 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b8195de5cb30bde03aa9dc4e88283250",
+    "content-hash": "43e2053df6e30ad2e10813c562febd87",
     "packages": [
+        {
+            "name": "arnedesmedt/client-mock",
+            "version": "0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/arnedesmedt/client-mock.git",
+                "reference": "0fa6e271f5920a174ecd5cefe670b7838ac3bde1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/arnedesmedt/client-mock/zipball/0fa6e271f5920a174ecd5cefe670b7838ac3bde1",
+                "reference": "0fa6e271f5920a174ecd5cefe670b7838ac3bde1",
+                "shasum": ""
+            },
+            "require": {
+                "arnedesmedt/php-util": "~0.1",
+                "arnedesmedt/value-objects": "~0.1",
+                "event-engine/php-json-schema": "~2.0",
+                "php": "^8"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "~11.0",
+                "phpmd/phpmd": "~2.0",
+                "phpro/grumphp": "~1.0",
+                "phpstan/phpstan": "~1.0",
+                "phpunit/phpunit": "~9.0",
+                "rector/rector": "~0.1",
+                "squizlabs/php_codesniffer": "~3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ADS\\ClientMock\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Arne De Smedt",
+                    "email": "arnedesmdt@gmail.com",
+                    "homepage": "https://github.com/arnedesmedt"
+                }
+            ],
+            "description": "Mock REST and SOAP clients",
+            "homepage": "https://github.com/arnedesmedt/client-mock",
+            "support": {
+                "issues": "https://github.com/arnedesmedt/client-mock/issues",
+                "source": "https://github.com/arnedesmedt/client-mock/tree/0.2.0"
+            },
+            "time": "2023-03-07T13:39:02+00:00"
+        },
         {
             "name": "arnedesmedt/json-immutable-objects",
             "version": "0.3.4",

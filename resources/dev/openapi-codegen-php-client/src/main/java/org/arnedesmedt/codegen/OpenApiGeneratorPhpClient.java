@@ -71,8 +71,9 @@ public class OpenApiGeneratorPhpClient extends PhpClientCodegen implements Codeg
 
     this.resetTemplateFiles();
 
-    supportingFiles.add(new SupportingFile("Client.mustache", "", clientClass.concat(".php")));
-    supportingFiles.add(new SupportingFile("README.mustache", "", "README.md"));
+    supportingFiles.add(new SupportingFile("client.mustache", "", clientClass.concat(".php")));
+    supportingFiles.add(new SupportingFile("clientInterface.mustache", "", clientClass.concat("Interface.php")));
+    supportingFiles.add(new SupportingFile("readme.mustache", "", "README.md"));
     supportingFiles.add(new SupportingFile("phpstan.mustache", "", "phpstan.neon"));
     supportingFiles.add(new SupportingFile("phpcs.mustache", "", "phpcs.xml"));
     supportingFiles.add(new SupportingFile("composer.mustache", "", "composer.json"));

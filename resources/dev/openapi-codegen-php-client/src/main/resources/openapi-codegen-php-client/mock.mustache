@@ -20,8 +20,8 @@ final class {{clientClass}}Mock implements Mock
     }{{#apiInfo.apis}}{{#operations}}{{#operation}}
 
     /**
-{{#pathParams}}
-     * @param {{dataType}}{{#isContainer}}<{{baseType}}>{{/isContainer}}{{^required}}|null{{/required}} ${{paramName}}{{/pathParams}}{{#bodyParams.0}}
+{{#pathParams}}     * @param {{dataType}}{{#isContainer}}<{{baseType}}>{{/isContainer}}{{^required}}|null{{/required}} ${{paramName}}
+{{/pathParams}}{{#bodyParams.0}}
      * @param {{#isContainer}}{{dataType}}<{{baseType}}>{{/isContainer}}{{^isContainer}}{{baseType}}{{#isMap}}<mixed>{{/isMap}}{{/isContainer}}{{^required}}|null{{/required}} $body{{/bodyParams.0}}
      */
     public function {{operationId}}({{#pathParams}}

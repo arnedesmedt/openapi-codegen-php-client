@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace {{modelPackage}};
 {{#model}}
+use {{invokerPackage}}\Default\{{#lambda.pascalcase}}{{name}}{{/lambda.pascalcase}}Default;
 {{#getIsAnyType}}{{#discriminator}}
 use ADS\JsonImmutableObjects\Polymorphism\Discriminator;
 use ADS\JsonImmutableObjects\Polymorphism\DiscriminatorLogic;{{/discriminator}}{{/getIsAnyType}}{{^getIsAnyType}}
@@ -15,6 +16,7 @@ use EventEngine\JsonSchema\JsonSchemaAwareRecord;{{/getIsAnyType}}
 
 final class {{classname}}{{^getIsAnyType}} implements SpecialKeySupport, JsonSchemaAwareRecord{{/getIsAnyType}}{{#discriminator}} implements Discriminator{{/discriminator}}
 {
+    use {{classname}}Default;
     {{^getIsAnyType}}use JsonSchemaAwareRecordLogic;
     use SpecialKeySupportLogic;{{/getIsAnyType}}{{#getIsAnyType}}{{#discriminator}}use DiscriminatorLogic;
 

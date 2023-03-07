@@ -92,6 +92,15 @@ public class OpenApiGeneratorPhpClient extends PhpClientCodegen implements Codeg
         this.modelNameSuffix = "Factory";
         this.fileSuffix = "Factory";
     }
+
+    if (additionalProperties.containsKey("defaults")) {
+        this.setSrcBasePath("Default");
+        modelTemplateFiles = new HashMap<>();
+        modelTemplateFiles.put("default.mustache", ".php");
+        this.modelPackage = this.invokerPackage + "\\";
+        this.modelNameSuffix = "Default";
+        this.fileSuffix = "Default";
+    }
   }
 
   @Override

@@ -38,9 +38,19 @@ docker run --rm -v "${rootdir}":/local ${generatorimage} generate -g openapi-cod
                                                                --additional-properties=factories=true \
                                                                --global-property=models
 
-cd "${rootdir}" && sudo chown -R "$(id -u):$(id -g)" Client.php ClientMock.php README.md composer.json grumphp.yml phpcs.xml phpmd.xml phpstan.neon rector.php Model Endpoint Factory
+# Create the defaults
+docker run --rm -v "${rootdir}":/local ${generatorimage} generate -g openapi-codegen-php-client \
+                                                               -i /local/resources/api/api-spec.yml \
+                                                               -o /local/ \
+                                                               -c /local/resources/api/config.json \
+                                                               -t /local/resources/api/templates \
+                                                               --additional-properties=defaults=true \
+                                                               --global-property=models \
+                                                               --skip-overwrite
+
+cd "${rootdir}" && sudo chown -R "$(id -u):$(id -g)" Client.php ClientMock.php README.md composer.json grumphp.yml phpcs.xml phpmd.xml phpstan.neon rector.php Model Endpoint Factory Default
 # Exit code of phpcbf is 1 if all is fixed https://github.com/squizlabs/PHP_CodeSniffer/issues/2898
-cd "${rootdir}" && (vendor/bin/phpcbf --extensions=php --report=full ./Client.php Model/ Endpoint/ Factory/ || true)
+cd "${rootdir}" && (vendor/bin/phpcbf --extensions=php --report=full ./Client.php Model/ Endpoint/ Factory/ Default/ || true)
 cd "${rootdir}" && vendor/bin/rector
 
 if [ -x "${rootdir}/resources/scripts/after_run.sh" ]

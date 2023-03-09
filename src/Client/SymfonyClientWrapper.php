@@ -38,6 +38,10 @@ class SymfonyClientWrapper implements ClientWrapper
 
         $responseContent = $response->getContent();
 
+        if (empty($responseContent)) {
+            return [];
+        }
+
         /** @var array<mixed> $content */
         $content = json_decode($responseContent, true, 512, JSON_THROW_ON_ERROR);
 

@@ -36,6 +36,10 @@ class GuzzleClientWrapper implements ClientWrapper
         $response->getBody()->rewind();
         $contents = $response->getBody()->getContents();
 
+        if (empty($contents)) {
+            return [];
+        }
+
         /** @var array<mixed> $content */
         $content = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
 

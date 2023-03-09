@@ -52,6 +52,7 @@
     },
     "scripts": {
         "tests": [
+            "vendor/bin/phpcbf",
             "vendor/bin/phpcs",
             "vendor/bin/phpstan analyze --no-progress",
             "vendor/bin/phpmd . text phpmd.xml --exclude vendor resources .openapi-generator",

@@ -6,12 +6,8 @@ namespace ADS\OpenApi\Codegen\Client;
 
 interface ClientWrapper
 {
-    /**
-     * @param array<string, mixed> $options
-     *
-     * @return array<mixed>
-     */
-    public function request(string $method, string $uri, array $options = []): array;
+    /** @param array<string, mixed> $options */
+    public function request(string $method, string $uri, array $options = []): mixed;
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint

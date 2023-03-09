@@ -37,7 +37,7 @@ abstract class Client
 
         $response = $this->client->request($method, $uri, $options);
 
-        if ($this->configs['transformHal'] ?? false) {
+        if (($this->configs['transformHal'] ?? false) && is_array($response)) {
             return $this->transformHal($response);
         }
 

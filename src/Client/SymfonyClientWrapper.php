@@ -22,7 +22,7 @@ class SymfonyClientWrapper implements ClientWrapper
     }
 
     /** @inheritDoc */
-    public function request(string $method, string $uri, array $options = []): array
+    public function request(string $method, string $uri, array $options = []): mixed
     {
         $response = $this->client->request($method, $uri, $options);
 
@@ -31,8 +31,7 @@ class SymfonyClientWrapper implements ClientWrapper
             ->contentFromResponse($response);
     }
 
-    /** @return array<mixed> */
-    private function contentFromResponse(ResponseInterface $response): array
+    private function contentFromResponse(ResponseInterface $response): mixed
     {
         assert($response instanceof ResponseInterface);
 
@@ -42,10 +41,7 @@ class SymfonyClientWrapper implements ClientWrapper
             return [];
         }
 
-        /** @var array<mixed> $content */
-        $content = json_decode($responseContent, true, 512, JSON_THROW_ON_ERROR);
-
-        return $content;
+        return json_decode($responseContent, true, 512, JSON_THROW_ON_ERROR);
     }
 
     private function setResponse(ResponseInterface $response): self

@@ -7,7 +7,7 @@ namespace ADS\OpenApi\Codegen\Client;
 class NullClientWrapper implements ClientWrapper
 {
     /** @inheritDoc */
-    public function request(string $method, string $uri, array $options = []): array
+    public function request(string $method, string $uri, array $options = []): mixed
     {
         return [];
     }

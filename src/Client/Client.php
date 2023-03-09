@@ -84,8 +84,7 @@ abstract class Client
 
             $data = $property->toArray();
             $data = ArrayUtil::rejectNullValues($data);
-            $data = ArrayUtil::removeSuffixFromKeys($data, '[]');
-            $options[$option] = ArrayUtil::rejectEmptyArrayValues($data);
+            $options[$option] = ArrayUtil::removeSuffixFromKeys($data, '[]');
         }
 
         return $options;

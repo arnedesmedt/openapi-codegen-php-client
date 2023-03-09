@@ -118,16 +118,16 @@
         },
         {
             "name": "arnedesmedt/php-util",
-            "version": "0.3.3",
+            "version": "0.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/arnedesmedt/php-util.git",
-                "reference": "4c499288e6f45f948088ad0b1639e35ea8a35abd"
+                "reference": "90d64e03909c7062ed5d28b50d2b2dc90670e8b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/arnedesmedt/php-util/zipball/4c499288e6f45f948088ad0b1639e35ea8a35abd",
-                "reference": "4c499288e6f45f948088ad0b1639e35ea8a35abd",
+                "url": "https://api.github.com/repos/arnedesmedt/php-util/zipball/90d64e03909c7062ed5d28b50d2b2dc90670e8b2",
+                "reference": "90d64e03909c7062ed5d28b50d2b2dc90670e8b2",
                 "shasum": ""
             },
             "require": {
@@ -135,7 +135,7 @@
             },
             "require-dev": {
                 "doctrine/coding-standard": "~11.0",
-                "phpmd/phpmd": "^2.13",
+                "phpmd/phpmd": "~2.0",
                 "phpro/grumphp": "~1.0",
                 "phpstan/phpstan": "~1.0",
                 "phpunit/phpunit": "~9.0",
@@ -145,8 +145,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "ADS\\Util\\": "src/",
-                    "ADS\\Util\\Tests\\": "tests/"
+                    "ADS\\Util\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -164,9 +163,9 @@
             "homepage": "https://github.com/arnedesmedt/php-util",
             "support": {
                 "issues": "https://github.com/arnedesmedt/php-util/issues",
-                "source": "https://github.com/arnedesmedt/php-util/tree/0.3.3"
+                "source": "https://github.com/arnedesmedt/php-util/tree/0.3.5"
             },
-            "time": "2023-02-03T15:28:34+00:00"
+            "time": "2023-03-09T13:23:56+00:00"
         },
         {
             "name": "arnedesmedt/value-objects",

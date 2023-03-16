@@ -31,6 +31,8 @@ import org.openapitools.codegen.utils.ModelUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
+
 public class OpenApiGeneratorPhpClient extends PhpClientCodegen implements CodegenConfig {
   public static final String GENERATOR_NAME         = "openapi-codegen-php-client";
   public static final String HELP_URL               = "helpUrl";
@@ -365,6 +367,42 @@ public class OpenApiGeneratorPhpClient extends PhpClientCodegen implements Codeg
   @Override
   public void postProcessFile(File file, String fileType) {
       return;
+  }
+
+  @Override
+  public Map<String, Object> postProcessModels(Map<String, Object> objs) {
+        // Remove "double" vars that will lead to the same php property in a model
+        // For example number and number[] will lead to the same property $number
+        // So keep the number[] var and remove the number var
+        objs = super.postProcessModels(objs);
+
+        ArrayList<Object> modelsArray = (ArrayList<Object>) objs.get("models");
+        Map<String, Object> models = (Map<String, Object>) modelsArray.get(0);
+        CodegenModel model = (CodegenModel) models.get("model");
+
+        // Simplify model var type
+        // define list of model vars to remove
+        List<CodegenProperty> varsToRemove = new ArrayList<CodegenProperty>();
+        for (Iterator<CodegenProperty> it = model.vars.iterator(); it.hasNext();) {
+            CodegenProperty var = it.next();
+            for (Iterator<CodegenProperty> it2 = model.vars.iterator(); it2.hasNext();) {
+                CodegenProperty var2 = it2.next();
+                if (var.baseName.equals(var2.baseName.concat("[]"))) {
+                    varsToRemove.add(var2);
+                    break;
+                }
+            }
+        }
+
+        model.vars.removeAll(varsToRemove);
+        model.allVars.removeAll(varsToRemove);
+        model.requiredVars.removeAll(varsToRemove);
+        model.optionalVars.removeAll(varsToRemove);
+        model.readOnlyVars.removeAll(varsToRemove);
+        model.readWriteVars.removeAll(varsToRemove);
+        model.parentVars.removeAll(varsToRemove);
+
+        return objs;
   }
 
   private void resetTemplateFiles() {

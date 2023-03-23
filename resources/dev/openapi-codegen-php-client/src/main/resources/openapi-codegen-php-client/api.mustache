@@ -63,6 +63,14 @@ class {{classname}} implements Endpoint, SpecialKeySupport
             '{{baseName}}' => '{{paramName}}',{{/pathParams}}
         ];
     }
+
+    /** @return array<string, string> */
+    private static function arrayPropItemTypeMap(): array
+    {
+        return [{{#bodyParams.0.isContainer}}
+            'body' => {{#bodyParams.0.items.complexType}}{{{.}}}::class{{/bodyParams.0.items.complexType}},{{/bodyParams.0.isContainer}}
+        ];
+    }
 {{/operation}}
 {{/operations}}
 }

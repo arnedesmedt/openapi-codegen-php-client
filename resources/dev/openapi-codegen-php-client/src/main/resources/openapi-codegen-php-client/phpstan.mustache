@@ -9,7 +9,9 @@ parameters:
     ignoreErrors:
         -
             message: '#arrayPropItemTypeMap\(\) is unused.$#'
-            path: ./Model/*
+            paths:
+                - ./Model/*
+                - ./Endpoint /*
         -
             message: '#maxValues\(\) is unused.$#'
             path: ./Model/*

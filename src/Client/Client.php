@@ -8,11 +8,15 @@ use ADS\OpenApi\Codegen\Endpoint\Endpoint;
 use ADS\Util\ArrayUtil;
 use Closure;
 use EventEngine\Data\ImmutableRecord;
+use RuntimeException;
 
 use function array_key_exists;
+use function array_map;
 use function array_shift;
 use function is_array;
+use function sprintf;
 
+/** @SuppressWarnings(PHPMD.CyclomaticComplexity) */
 abstract class Client
 {
     private const ENDPOINT_PROPERTIES_OPTIONS_MAP = [
@@ -72,18 +76,40 @@ abstract class Client
         $options = $this->optionBuilder ? ($this->optionBuilder)($endpoint) : [];
 
         foreach (self::ENDPOINT_PROPERTIES_OPTIONS_MAP as $propertyName => $option) {
-            $property = $endpoint->{$propertyName}();
-
-            if (
-                array_key_exists($option, $options)
-                || ! ($property instanceof ImmutableRecord)
-                || empty($property->toArray())
-            ) {
+            $data = $endpoint->{$propertyName}();
+            if (array_key_exists($option, $options) || $data === null) {
                 continue;
             }
 
-            $data = $property->toArray();
+            if ($data instanceof ImmutableRecord) {
+                $data = $data->toArray();
+            }
+
+            if (! is_array($data)) {
+                throw new RuntimeException(
+                    sprintf(
+                        'Client data for property \'%s\' and method \'%s\' should be an array.',
+                        $propertyName,
+                        $endpoint->method(),
+                    ),
+                );
+            }
+
             $data = ArrayUtil::rejectNullValues($data);
+
+            if (empty($data)) {
+                continue;
+            }
+
+            if (! ArrayUtil::isAssociative($data)) {
+                $options[$option] = array_map(
+                    static fn ($dataItem) => $dataItem instanceof ImmutableRecord ? $dataItem->toArray() : $dataItem,
+                    $data,
+                );
+
+                continue;
+            }
+
             $options[$option] = ArrayUtil::removeSuffixFromKeys($data, '[]');
         }
 

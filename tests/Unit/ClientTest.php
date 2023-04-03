@@ -9,8 +9,6 @@ use ADS\OpenApi\Codegen\Tests\Unit\Client\ClientBuilder;
 use ADS\OpenApi\Codegen\Tests\Unit\Client\ClientBuilderWithoutConfigs;
 use PHPUnit\Framework\TestCase;
 
-use function array_filter;
-
 class ClientTest extends TestCase
 {
     /** @return array<string, array<string, mixed>> */
@@ -55,17 +53,13 @@ class ClientTest extends TestCase
     public function testTestEndpoint(array $response, array $return): void
     {
         $wrapper = $this->createMock(NullClientWrapper::class);
-        $options = [
-            'query' => ['testQuery' => 'ziezo'],
-            'body' => [],
-        ];
         $wrapper
             ->expects($this->once())
             ->method('request')
             ->with(
                 'GET',
                 'test/1',
-                array_filter($options),
+                ['query' => ['testQuery' => 'ziezo']],
             )
             ->willReturn($response);
 
@@ -82,5 +76,22 @@ class ClientTest extends TestCase
 
         $this->assertIsArray($clientResponse);
         $this->assertEmpty($clientResponse);
+    }
+
+    public function testTestEndpointWithEmptyBody(): void
+    {
+        $wrapper = $this->createMock(NullClientWrapper::class);
+        $wrapper
+            ->expects($this->once())
+            ->method('request')
+            ->with(
+                'GET',
+                'test-with-array-body/1',
+                ['json' => []],
+            )
+            ->willReturn([]);
+
+        $client = (new ClientBuilder($wrapper))->build();
+        $client->testWithEmptyBody();
     }
 }

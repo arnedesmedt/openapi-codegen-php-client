@@ -97,10 +97,6 @@ abstract class Client
 
             $data = ArrayUtil::rejectNullValues($data);
 
-            if (empty($data)) {
-                continue;
-            }
-
             if (! ArrayUtil::isAssociative($data)) {
                 $options[$option] = array_map(
                     static fn ($dataItem) => $dataItem instanceof ImmutableRecord ? $dataItem->toArray() : $dataItem,

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ADS\OpenApi\Codegen\Tests\Unit\Client;
 
 use ADS\OpenApi\Codegen\Tests\Unit\Endpoint\TestEndpoint;
+use ADS\OpenApi\Codegen\Tests\Unit\Endpoint\TestEndpointWithArrayBody;
 
 class Client extends \ADS\OpenApi\Codegen\Client\Client
 {
@@ -15,6 +16,18 @@ class Client extends \ADS\OpenApi\Codegen\Client\Client
                 [
                     'idTest' => 1,
                     'query' => ['testQuery' => 'ziezo'],
+                ],
+            ),
+        );
+    }
+
+    public function testWithEmptyBody(): mixed
+    {
+        return $this->performRequest(
+            TestEndpointWithArrayBody::fromArray(
+                [
+                    'idTest' => 1,
+                    'body' => [],
                 ],
             ),
         );

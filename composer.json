@@ -38,7 +38,8 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "bin": [
-        "resources/dev/openapi-codegen-php-client.sh"
+        "resources/dev/openapi-codegen-php-client.sh",
+        "resources/dev/fetch-openapi-and-generate.sh"
     ],
     "config": {
         "allow-plugins": {

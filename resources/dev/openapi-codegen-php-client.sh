@@ -27,7 +27,7 @@ docker run --rm -v "${rootdir}":/local ${generatorimage} generate -g openapi-cod
                                                                -i /local/resources/api/api-spec.yml \
                                                                -o /local/ \
                                                                -c /local/resources/api/config.json \
-                                                               -t /local/resources/api/templates
+                                                               -t /local/resources/api/templates 1>/dev/null
 
 # Create the factories
 docker run --rm -v "${rootdir}":/local ${generatorimage} generate -g openapi-codegen-php-client \
@@ -36,7 +36,7 @@ docker run --rm -v "${rootdir}":/local ${generatorimage} generate -g openapi-cod
                                                                -c /local/resources/api/config.json \
                                                                -t /local/resources/api/templates \
                                                                --additional-properties=factories=true \
-                                                               --global-property=models
+                                                               --global-property=models 1>/dev/null
 
 # Create the defaults
 docker run --rm -v "${rootdir}":/local ${generatorimage} generate -g openapi-codegen-php-client \
@@ -46,7 +46,7 @@ docker run --rm -v "${rootdir}":/local ${generatorimage} generate -g openapi-cod
                                                                -t /local/resources/api/templates \
                                                                --additional-properties=defaults=true \
                                                                --global-property=models \
-                                                               --skip-overwrite
+                                                               --skip-overwrite 1>/dev/null
 
 cd "${rootdir}" && sudo chown -R "$(id -u):$(id -g)" Client.php ClientMock.php ApiClientMock.php ClientInterface.php README.md composer.json grumphp.yml phpcs.xml phpmd.xml phpstan.neon rector.php Model Endpoint Factory Default
 # Exit code of phpcbf is 1 if all is fixed https://github.com/squizlabs/PHP_CodeSniffer/issues/2898

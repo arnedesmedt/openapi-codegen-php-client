@@ -1,19 +1,30 @@
 #!/bin/bash
 set -e
 
-if [ -z $OPEN_API_SPEC_URL ]; then
-    echo "Environment variable OPEN_API_SPEC_URL is not set."; exit 1;
+OPENAPI=${1:-''}
+
+## CHECK IF ALL VARIABLES ARE SET
+if [ -z $OPENAPI ]; then
+    echo "No open api spec location was found. Add the url or path as parameter."; exit 1;
 fi
 
-if [ -z $CI_COMMIT_REF_NAME ]; then
-    echo "Environment variable CI_COMMIT_REF_NAME is not set."; exit 1;
-fi
+#if [ -z $CI_COMMIT_REF_NAME ]; then
+#    echo "Environment variable CI_COMMIT_REF_NAME is not set."; exit 1;
+#fi
+
+## FETCH OPEN API SPEC
+if [ -f $OPENAPI ]; then
+  mv $OPENAPI resource/api/api-spec.json;
+else
+  wget --no-check-certificate -cq $OPENAPI -O - | jq --indent 4 '.' > resources/api/api-spec.json;
+fi;
+
+chmod -R 777 resources/api
 
 git checkout -B feature/client-generation
-wget --no-check-certificate -cq $OPEN_API_SPEC_URL -O - | jq --indent 4 '.' > resources/api/api-spec.yml
-chmod -R 777 resources/api
 vendor/bin/openapi-codegen-php-client.sh
-git stash -- resources/api/api-spec.yml
+
+git stash -- resources/api/api-spec.json
 if [ -z "$(git status --porcelain)" ]; then echo "No changes found during a new generate."; exit 0; fi
 git stash apply
 git add .

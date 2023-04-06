@@ -24,14 +24,14 @@ then
 fi
 
 docker run --rm -v "${rootdir}":/local ${generatorimage} generate -g openapi-codegen-php-client \
-                                                               -i /local/resources/api/api-spec.yml \
+                                                               -i /local/resources/api/api-spec.json \
                                                                -o /local/ \
                                                                -c /local/resources/api/config.json \
                                                                -t /local/resources/api/templates 1>/dev/null
 
 # Create the factories
 docker run --rm -v "${rootdir}":/local ${generatorimage} generate -g openapi-codegen-php-client \
-                                                               -i /local/resources/api/api-spec.yml \
+                                                               -i /local/resources/api/api-spec.json \
                                                                -o /local/ \
                                                                -c /local/resources/api/config.json \
                                                                -t /local/resources/api/templates \
@@ -40,7 +40,7 @@ docker run --rm -v "${rootdir}":/local ${generatorimage} generate -g openapi-cod
 
 # Create the defaults
 docker run --rm -v "${rootdir}":/local ${generatorimage} generate -g openapi-codegen-php-client \
-                                                               -i /local/resources/api/api-spec.yml \
+                                                               -i /local/resources/api/api-spec.json \
                                                                -o /local/ \
                                                                -c /local/resources/api/config.json \
                                                                -t /local/resources/api/templates \

@@ -9,8 +9,6 @@ if [ -z $CI_COMMIT_REF_NAME ]; then
     echo "Environment variable CI_COMMIT_REF_NAME is not set."; exit 1;
 fi
 
-git remote -v
-env
 git checkout -B feature/client-generation
 wget --no-check-certificate -cq $OPEN_API_SPEC_URL -O - | jq --indent 4 '.' > resources/api/api-spec.yml
 chmod -R 777 resources/api

@@ -2,7 +2,7 @@ FROM jimschubert/8-jdk-alpine-mvn:2.0 as builder
 
 WORKDIR /build
 COPY . /build/
-RUN --mount=type=cache,target=/root/.m2 mvn -f /build/pom.xml clean package
+RUN --mount=type=cache,target=/root/.m2 mvn -q -f /build/pom.xml clean package
 
 FROM openapitools/openapi-generator-cli:v5.3.0 as runner
 

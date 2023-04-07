@@ -14,7 +14,7 @@ fi
 
 ## FETCH OPEN API SPEC
 if [ -f $OPENAPI ]; then
-  mv $OPENAPI resource/api/api-spec.json;
+  mv $OPENAPI resources/api/api-spec.json;
 else
   wget --no-check-certificate -cq $OPENAPI -O - | jq --indent 4 '.' > resources/api/api-spec.json;
 fi;

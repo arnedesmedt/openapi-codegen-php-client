@@ -24,7 +24,7 @@ chmod -R 777 resources/api
 git checkout -B feature/client-generation
 vendor/bin/openapi-codegen-php-client.sh
 
-git stash -- resources/api/api-spec.json
+git stash -- resources/api/api-spec.json || true
 if [ -z "$(git status --porcelain)" ]; then echo "No changes found during a new generate."; exit 0; fi
 git stash apply
 git add .

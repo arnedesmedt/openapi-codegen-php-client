@@ -29,5 +29,5 @@ if [ -z "$(git status --porcelain)" ]; then echo "No changes found during a new 
 git stash apply
 git add .
 git commit -m "Automatic update client by CI"
-git remote -v
 git push origin feature/client-generation:$CI_COMMIT_REF_NAME --force
+exit 1;

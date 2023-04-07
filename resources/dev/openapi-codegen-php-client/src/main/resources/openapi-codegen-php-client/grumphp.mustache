@@ -6,8 +6,9 @@ grumphp:
         succeeded: ~
         failed: ~
     tasks:
-        phpcs: null
-        phpstan: null
+        phpcs:
+        phpstan:
+            memory_limit: "256M"
         phpmd:
             ruleset:
                 - phpmd.xml

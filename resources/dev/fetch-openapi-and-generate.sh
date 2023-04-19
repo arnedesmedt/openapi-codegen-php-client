@@ -8,13 +8,11 @@ if [ -z $OPENAPI ]; then
     echo "No open api spec location was found. Add the url or path as parameter."; exit 1;
 fi
 
-#if [ -z $CI_COMMIT_REF_NAME ]; then
-#    echo "Environment variable CI_COMMIT_REF_NAME is not set."; exit 1;
-#fi
-
 ## FETCH OPEN API SPEC
 if [ -f $OPENAPI ]; then
-  mv $OPENAPI resources/api/api-spec.json;
+  if [ $OPENAPI != "resources/api/api-spec.json" ]; then
+    mv $OPENAPI resources/api/api-spec.json;
+  fi;
 else
   wget --no-check-certificate -cq $OPENAPI -O - | jq --indent 4 '.' > resources/api/api-spec.json;
 fi;

@@ -13,6 +13,7 @@
         "php": "^8.1",
         "arnedesmedt/client-mock": "^0.2.0",
         "arnedesmedt/json-immutable-objects": "~0.1",
+        "arnedesmedt/php-util": "^0.3.5",
         "guzzlehttp/guzzle": "~7.0",
         "symfony/http-client": "~6.0"
     },

@@ -18,8 +18,8 @@ final class Api{{clientClass}}Mock implements Mock
         return {{clientClass}}Interface::class;
     }{{#apiInfo.apis}}{{#operations}}{{#operation}}
 
-    /**{{#pathParams}}
-     * @see Client::{{operationId}}()
+    /**
+     * @see Client::{{operationId}}(){{#pathParams}}
      * @param {{dataType}}{{#isContainer}}<{{baseType}}>{{/isContainer}}{{^required}}|null{{/required}} ${{paramName}}{{/pathParams}}{{#bodyParams.0}}
      * @param {{#isContainer}}{{dataType}}<{{baseType}}>{{/isContainer}}{{^isContainer}}{{baseType}}{{#isMap}}<mixed>{{/isMap}}{{/isContainer}}{{^required}}|null{{/required}} $body{{/bodyParams.0}}
      */

@@ -25,6 +25,9 @@ abstract class Client
         'form' => 'form_params',
     ];
 
+    /** @var array<string, string> */
+    private array $headers = [];
+
     /** @param array<string, mixed> $configs */
     public function __construct(
         private readonly ClientWrapper $client,
@@ -70,10 +73,27 @@ abstract class Client
         return $content;
     }
 
+    public function addHeader(string $key, string $value): self
+    {
+        $this->headers[$key] = $value;
+
+        return $this;
+    }
+
     /** @return array<mixed> */
     protected function buildOptions(Endpoint $endpoint): array
     {
         $options = $this->optionBuilder ? ($this->optionBuilder)($endpoint) : [];
+
+        if (! isset($options['headers']) && ! empty($this->headers)) {
+            $options['headers'] = [];
+        }
+
+        foreach ($this->headers as $name => $value) {
+            $options['headers'][$name] = $value;
+        }
+
+        $this->headers = [];
 
         foreach (self::ENDPOINT_PROPERTIES_OPTIONS_MAP as $propertyName => $option) {
             $data = $endpoint->{$propertyName}();

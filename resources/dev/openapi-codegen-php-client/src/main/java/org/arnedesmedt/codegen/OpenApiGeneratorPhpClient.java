@@ -388,6 +388,9 @@ public class OpenApiGeneratorPhpClient extends PhpClientCodegen implements Codeg
             for (Iterator<CodegenProperty> it2 = model.vars.iterator(); it2.hasNext();) {
                 CodegenProperty var2 = it2.next();
                 if (var.baseName.equals(var2.baseName.concat("[]"))) {
+                    // Replace the array notation without the array.
+                    // The client adds the array twice
+                    var.baseName = var2.baseName;
                     varsToRemove.add(var2);
                     break;
                 }

@@ -14,7 +14,7 @@
         "arnedesmedt/client-mock": "~0.1",
         "arnedesmedt/php-util": "~0.1",
         "guzzlehttp/guzzle": "~7.0",
-        "symfony/http-client-contracts": "~2.0"
+        "symfony/http-client-contracts": "~3.0"
     },
     "require-dev" : {
         "arnedesmedt/json-immutable-objects": "~0.1",

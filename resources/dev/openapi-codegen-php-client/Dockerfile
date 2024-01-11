@@ -1,4 +1,4 @@
-FROM jimschubert/8-jdk-alpine-mvn:2.0 as builder
+FROM timbru31/alpine-java-maven as builder
 
 WORKDIR /build
 COPY . /build/

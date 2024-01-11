@@ -25,8 +25,10 @@ import java.io.File;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openapitools.codegen.*;
-import org.openapitools.codegen.languages.PhpClientCodegen;
+import org.openapitools.codegen.model.ModelMap;
+import org.openapitools.codegen.model.ModelsMap;
 import org.openapitools.codegen.utils.ModelUtils;
+import org.openapitools.codegen.languages.PhpClientCodegen;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -121,21 +123,21 @@ public class OpenApiGeneratorPhpClient extends PhpClientCodegen implements Codeg
   }
 
   @Override
-  public String toAnyOfName(List<String> names, ComposedSchema composedSchema) {
+  public String toAnyOfName(List<String> names, Schema composedSchema) {
     return this.toComposedName(names, composedSchema);
   }
 
   @Override
-  public String toOneOfName(List<String> names, ComposedSchema composedSchema) {
+  public String toOneOfName(List<String> names, Schema composedSchema) {
     return this.toComposedName(names, composedSchema);
   }
 
   @Override
-  public String toAllOfName(List<String> names, ComposedSchema composedSchema) {
+  public String toAllOfName(List<String> names, Schema composedSchema) {
     return this.toComposedName(names, composedSchema);
   }
 
-  private String toComposedName(List<String> names, ComposedSchema composedSchema) {
+  private String toComposedName(List<String> names, Schema composedSchema) {
     if (ModelUtils.isStringSchema(composedSchema)) {
       return "string";
     }
@@ -370,15 +372,15 @@ public class OpenApiGeneratorPhpClient extends PhpClientCodegen implements Codeg
   }
 
   @Override
-  public Map<String, Object> postProcessModels(Map<String, Object> objs) {
+  public ModelsMap postProcessModels(ModelsMap objs) {
         // Remove "double" vars that will lead to the same php property in a model
         // For example number and number[] will lead to the same property $number
         // So keep the number[] var and remove the number var
         objs = super.postProcessModels(objs);
 
-        ArrayList<Object> modelsArray = (ArrayList<Object>) objs.get("models");
-        Map<String, Object> models = (Map<String, Object>) modelsArray.get(0);
-        CodegenModel model = (CodegenModel) models.get("model");
+        List<ModelMap> models = objs.getModels();
+        ModelMap modelMap = models.get(0);
+        CodegenModel model = modelMap.getModel();
 
         // Simplify model var type
         // define list of model vars to remove

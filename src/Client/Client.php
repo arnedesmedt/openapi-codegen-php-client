@@ -73,7 +73,7 @@ abstract class Client
         return $content;
     }
 
-    public function addHeader(string $key, string $value): self
+    public function addHeader(string $key, string $value): static
     {
         $this->headers[$key] = $value;
 

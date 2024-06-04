@@ -1,4 +1,4 @@
-FROM timbru31/alpine-java-maven as builder
+FROM --platform=linux/amd64 timbru31/alpine-java-maven as builder
 
 WORKDIR /build
 COPY . /build/

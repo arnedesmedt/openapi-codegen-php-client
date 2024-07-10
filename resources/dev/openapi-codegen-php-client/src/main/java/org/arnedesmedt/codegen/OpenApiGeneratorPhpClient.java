@@ -480,4 +480,9 @@ public class OpenApiGeneratorPhpClient extends PhpClientCodegen implements Codeg
 
     return arraySchema.getDefault().toString();
   }
+
+  @Override
+  public boolean getUseOpenapiNormalizer() {
+      return false;
+  }
 }

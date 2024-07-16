@@ -14,7 +14,7 @@ use ADS\OpenApi\Codegen\Endpoint\SpecialKeySupportLogic;
 use EventEngine\Data\SpecialKeySupport;
 use EventEngine\JsonSchema\JsonSchemaAwareRecord;{{/getIsAnyType}}
 
-final class {{classname}}{{^getIsAnyType}} implements SpecialKeySupport, JsonSchemaAwareRecord{{/getIsAnyType}}{{#discriminator}} implements Discriminator{{/discriminator}}
+final class {{classname}}{{^getIsAnyType}} implements SpecialKeySupport, JsonSchemaAwareRecord{{#discriminator}}, Discriminator{{/discriminator}}{{/getIsAnyType}}{{#getIsAnyType}}{{#discriminator}} implements Discriminator{{/discriminator}}{{/getIsAnyType}}
 {
     use {{classname}}Default;
     {{^getIsAnyType}}use JsonSchemaAwareRecordLogic;

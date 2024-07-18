@@ -25,7 +25,7 @@ class TestQuery implements JsonSchemaAwareRecord, SpecialKeySupport
     }
 
     /** @return array<string,string> */
-    protected function keyMapping(): array
+    public function keyMapping(): array
     {
         return [
             'testQuery' => 'testQuery',

@@ -9,7 +9,7 @@ use function array_flip;
 trait SpecialKeySupportLogic
 {
     /** @return array<string, string> */
-    abstract protected function keyMapping(): array;
+    abstract public function keyMapping(): array;
 
     public function convertKeyForRecord(string $key): string
     {

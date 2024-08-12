@@ -106,6 +106,7 @@ abstract class Client
                 if (method_exists($data, 'setToPlainText')) {
                     $data = $data->setToPlainText(true);
                 }
+
                 $data = $data->toArray();
             }
 

@@ -492,8 +492,4 @@ public class OpenApiGeneratorPhpClient extends PhpClientCodegen implements Codeg
   public boolean getUseOpenapiNormalizer() {
       return false;
   }
-
-  public boolean getUseInlineModelResolver() {
-      return false;
-  }
 }

@@ -135,10 +135,18 @@ public class OpenApiGeneratorPhpClient extends PhpClientCodegen implements Codeg
             if (content != null) {
               // remove all the media types except application/json
               MediaType mediaType = content.get("application/json");
-              if (mediaType != null) {
+              MediaType mediaTypePatch = content.get("application/merge-patch+json");
+              if (mediaType != null || mediaTypePatch != null) {
                 content.clear();
-                content.addMediaType("application/json", mediaType);
               }
+
+                if (mediaType != null) {
+                    content.addMediaType("application/json", mediaType);
+                }
+
+                if (mediaTypePatch != null) {
+                    content.addMediaType("application/merge-patch+json", mediaTypePatch);
+                }
             }
           });
          }

@@ -105,6 +105,51 @@ public class OpenApiGeneratorPhpClient extends PhpClientCodegen implements Codeg
         this.modelNameSuffix = "Default";
         this.fileSuffix = "Default";
     }
+
+    this.onlyJsonMediaTypes();
+    this.onlyJsonComponents();
+  }
+
+  private void onlyJsonMediaTypes() {
+    for (String pathName : openAPI.getPaths().keySet()) {
+      PathItem pathItem = openAPI.getPaths().get(pathName);
+      Map<HttpMethod, Operation> operations = pathItem.readOperationsMap();
+      for (HttpMethod method : operations.keySet()) {
+        Operation operation = operations.get(method);
+        if (operation.getRequestBody() != null) {
+          RequestBody requestBody = operation.getRequestBody();
+          Content content = requestBody.getContent();
+          if (content != null) {
+            // remove all the media types except application/json
+            MediaType mediaType = content.get("application/json");
+            if (mediaType != null) {
+              content.clear();
+              content.addMediaType("application/json", mediaType);
+            }
+          }
+        }
+
+        if (operation.getResponses() != null) {
+          operation.getResponses().forEach((responseCode, response) -> {
+            Content content = response.getContent();
+            if (content != null) {
+              // remove all the media types except application/json
+              MediaType mediaType = content.get("application/json");
+              if (mediaType != null) {
+                content.clear();
+                content.addMediaType("application/json", mediaType);
+              }
+            }
+          });
+         }
+      }
+    }
+  }
+
+  private void onlyJsonComponents() {
+    Components components = openAPI.getComponents();
+    Map<String, Schema> schemas = components.getSchemas();
+    schemas.keySet().removeIf(schemaName -> schemaName.contains(".jsonld") || schemaName.contains(".jsonhal"));
   }
 
   @Override

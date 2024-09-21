@@ -6,19 +6,19 @@ declare(strict_types=1);
 namespace {{modelPackage}};
 {{#model}}
 use {{invokerPackage}}\Default\{{#lambda.pascalcase}}{{name}}{{/lambda.pascalcase}}Default;
-{{#getIsAnyType}}{{#discriminator}}
+{{#discriminator}}
 use ADS\JsonImmutableObjects\Polymorphism\Discriminator;
-use ADS\JsonImmutableObjects\Polymorphism\DiscriminatorLogic;{{/discriminator}}{{/getIsAnyType}}{{^getIsAnyType}}
+use ADS\JsonImmutableObjects\Polymorphism\DiscriminatorLogic;{{/discriminator}}{{^discriminator}}
 use ADS\JsonImmutableObjects\JsonSchemaAwareRecordLogic;
 use ADS\OpenApi\Codegen\Endpoint\SpecialKeySupportLogic;
 use EventEngine\Data\SpecialKeySupport;
-use EventEngine\JsonSchema\JsonSchemaAwareRecord;{{/getIsAnyType}}
+use EventEngine\JsonSchema\JsonSchemaAwareRecord;{{/discriminator}}
 
-final class {{classname}}{{^getIsAnyType}} implements SpecialKeySupport, JsonSchemaAwareRecord{{#discriminator}}, Discriminator{{/discriminator}}{{/getIsAnyType}}{{#getIsAnyType}}{{#discriminator}} implements Discriminator{{/discriminator}}{{/getIsAnyType}}
+final class {{classname}}{{^discriminator}} implements SpecialKeySupport, JsonSchemaAwareRecord{{/discriminator}}{{#discriminator}} implements Discriminator{{/discriminator}}
 {
     use {{classname}}Default;
-    {{^getIsAnyType}}use JsonSchemaAwareRecordLogic;
-    use SpecialKeySupportLogic;{{/getIsAnyType}}{{#getIsAnyType}}{{#discriminator}}use DiscriminatorLogic;
+    {{^discriminator}}use JsonSchemaAwareRecordLogic;
+    use SpecialKeySupportLogic;{{/discriminator}}{{#discriminator}}use DiscriminatorLogic;
 
     public static function propertyName(): string
     {
@@ -39,7 +39,7 @@ final class {{classname}}{{^getIsAnyType}} implements SpecialKeySupport, JsonSch
             {{name}}::class,{{/interfaceModels}}
         ];
     }
-{{/discriminator}}{{/getIsAnyType}}{{^getIsAnyType}}
+{{/discriminator}}{{^discriminator}}
 
 // phpcs:disable SlevomatCodingStandard.Classes.UnusedPrivateElements.UnusedProperty
 // phpcs:disable Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
@@ -80,4 +80,4 @@ final class {{classname}}{{^getIsAnyType}} implements SpecialKeySupport, JsonSch
         ];
     }
 // phpcs:enable
-{{/getIsAnyType}}}{{/model}}{{/models}}
+{{/discriminator}}}{{/model}}{{/models}}

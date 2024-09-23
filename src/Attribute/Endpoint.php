@@ -6,7 +6,7 @@ namespace ADS\OpenApi\Codegen\Attribute;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_CLASS)]
+#[Attribute(Attribute::TARGET_METHOD)]
 class Endpoint
 {
     public function __construct(

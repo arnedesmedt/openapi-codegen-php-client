@@ -14,6 +14,7 @@ use function array_key_exists;
 use function array_map;
 use function array_shift;
 use function is_array;
+use function method_exists;
 use function sprintf;
 
 /** @SuppressWarnings(PHPMD.CyclomaticComplexity) */
@@ -102,6 +103,10 @@ abstract class Client
             }
 
             if ($data instanceof ImmutableRecord) {
+                if (method_exists($data, 'setToPlainText')) {
+                    $data = $data->setToPlainText(true);
+                }
+
                 $data = $data->toArray();
             }
 

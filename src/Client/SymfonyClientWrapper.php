@@ -35,7 +35,7 @@ class SymfonyClientWrapper implements ClientWrapper
     {
         assert($response instanceof ResponseInterface);
 
-        $responseContent = $response->getContent(false);
+        $responseContent = $response->getContent();
 
         if (empty($responseContent)) {
             return [];

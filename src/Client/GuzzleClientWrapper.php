@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ADS\OpenApi\Codegen\Client;
 
+use ADS\OpenApi\Codegen\Exception\ClientResponseException;
 use GuzzleHttp\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -24,6 +25,16 @@ class GuzzleClientWrapper implements ClientWrapper
     public function request(string $method, string $uri, array $options = []): mixed
     {
         $response = $this->client->request($method, $uri, $options);
+
+        if ($options['throw_exception'] ?? false) {
+            $statusCode = $response->getStatusCode();
+            if ($statusCode >= 400) {
+                throw ClientResponseException::fromStatusCodeAndMessage(
+                    $response->getStatusCode(),
+                    $response->getBody()->getContents(),
+                );
+            }
+        }
 
         return $this
             ->setResponse($response)

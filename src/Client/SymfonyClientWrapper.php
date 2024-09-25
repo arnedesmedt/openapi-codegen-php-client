@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ADS\OpenApi\Codegen\Client;
 
+use ADS\OpenApi\Codegen\Exception\ClientResponseException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -25,6 +26,16 @@ class SymfonyClientWrapper implements ClientWrapper
     public function request(string $method, string $uri, array $options = []): mixed
     {
         $response = $this->client->request($method, $uri, $options);
+
+        if ($options['throw_exception'] ?? false) {
+            $statusCode = $response->getStatusCode();
+            if ($statusCode >= 400) {
+                throw ClientResponseException::fromStatusCodeAndMessage(
+                    $response->getStatusCode(),
+                    $response->getContent(),
+                );
+            }
+        }
 
         return $this
             ->setResponse($response)

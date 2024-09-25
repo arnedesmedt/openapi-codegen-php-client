@@ -261,14 +261,6 @@ public class OpenApiGeneratorPhpClient extends PhpClientCodegen implements Codeg
     Components components = openAPI.getComponents();
     Map<String, Schema> schemas = components.getSchemas();
 
-    // remove all the schemas that end with .jsonhal or .jsonld
-    List<String> keys = new ArrayList<>(schemas.keySet());
-    for (String key : keys) {
-        if (key.endsWith(".jsonhal") || key.endsWith(".jsonld")) {
-            schemas.remove(key);
-        }
-    }
-
     for (String pathName : paths.keySet()) {
         PathItem pathItem = paths.get(pathName);
         Map<HttpMethod, Operation>  operations = pathItem.readOperationsMap();

@@ -6,6 +6,7 @@ namespace ADS\OpenApi\Codegen\Client;
 
 use ADS\OpenApi\Codegen\Endpoint\Endpoint;
 use ADS\Util\ArrayUtil;
+use ADS\ValueObjects\Service\EncryptDecryptService;
 use Closure;
 use EventEngine\Data\ImmutableRecord;
 use RuntimeException;
@@ -14,6 +15,7 @@ use function array_key_exists;
 use function array_map;
 use function array_shift;
 use function is_array;
+use function is_string;
 use function sprintf;
 
 /** @SuppressWarnings(PHPMD.CyclomaticComplexity) */
@@ -102,7 +104,7 @@ abstract class Client
             }
 
             if ($data instanceof ImmutableRecord) {
-                $data = $data->toArray();
+                $data = $this->decryptEncryptedValues($data->toArray());
             }
 
             if (! is_array($data)) {
@@ -130,5 +132,31 @@ abstract class Client
         }
 
         return $options;
+    }
+
+    /**
+     * @param array<mixed> $data
+     *
+     * @return array<mixed>
+     */
+    private function decryptEncryptedValues(array $data): array
+    {
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $data[$key] = $this->decryptEncryptedValues($value);
+            }
+
+            if (! is_string($value)) {
+                continue;
+            }
+
+            if (! EncryptDecryptService::isSupportedEncryptedString($value)) {
+                continue;
+            }
+
+            $data[$key] = EncryptDecryptService::decrypt($value);
+        }
+
+        return $data;
     }
 }
